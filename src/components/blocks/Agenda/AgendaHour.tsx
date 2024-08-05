@@ -1,4 +1,4 @@
-import {formatTime} from "../../utils/format.ts";
+import {formatTime} from "../../../utils/format.ts";
 
 export const HOUR_WIDTH = 70;
 

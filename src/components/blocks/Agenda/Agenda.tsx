@@ -1,8 +1,8 @@
 import AgendaHour from "./AgendaHour.tsx";
-import useTime from "../../hooks/useTime.ts";
+import useTime from "../../../hooks/useTime.ts";
 import AgendaEvent, {Event} from "./AgendaEvent.tsx";
 import CurrentHour from "./CurrentHour.tsx";
-import useAgendaHours from "../../hooks/useAgendaHours.ts";
+import useAgendaHours from "../../../hooks/useAgendaHours.ts";
 import {useEffect, useRef} from "react";
 
 const precomputeHours = 12;

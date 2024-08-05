@@ -1,9 +1,9 @@
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react'
-import {useSetDialog} from "../contexts/DialogContextProvider.tsx";
-import Button from "../buttons/Button.tsx";
-import TextInput from "../form/TextInput.tsx";
+import {useSetDialog} from "../../contexts/DialogContextProvider.tsx";
+import Button from "../primitives/buttons/Button.tsx";
+import TextInput from "../primitives/form/TextInput.tsx";
 import {useNavigate} from "react-router-dom";
-import {Event} from "../layout/Agenda/AgendaEvent.tsx";
+import {Event} from "../blocks/Agenda/AgendaEvent.tsx";
 
 
 export default function Example({reservation}: { reservation: Event }) {

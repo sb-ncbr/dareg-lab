@@ -1,8 +1,8 @@
 import {getPosition} from "./Agenda.tsx";
 import {HOUR_WIDTH} from "./AgendaHour.tsx";
-import {formatTime} from "../../utils/format.ts";
+import {formatTime} from "../../../utils/format.ts";
 import {twMerge} from "tailwind-merge";
-import {useSetDialog} from "../../contexts/DialogContextProvider.tsx";
+import {useSetDialog} from "../../../contexts/DialogContextProvider.tsx";
 import ConfirmIdentityDialog from "../../dialog/ConfirmIdentityDialog.tsx";
 
 export interface Event {

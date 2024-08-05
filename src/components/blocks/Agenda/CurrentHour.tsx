@@ -1,6 +1,6 @@
 import {useMemo} from "react";
 import {getPosition} from "./Agenda.tsx";
-import {formatTime} from "../../utils/format.ts";
+import {formatTime} from "../../../utils/format.ts";
 
 interface CurrentHourProps {
     agendaFrom: Date;

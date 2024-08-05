@@ -1,5 +1,5 @@
 import {Fragment} from "react";
-import useTime from "../../hooks/useTime.ts";
+import useTime from "../../../hooks/useTime.ts";
 
 const CurrentTime = () => {
     const time = useTime();
