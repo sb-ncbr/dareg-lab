@@ -1,4 +1,4 @@
-import {Fragment, useEffect, useState} from "react";
+import {Fragment} from "react";
 import useTime from "../../hooks/useTime.ts";
 
 const CurrentTime = () => {

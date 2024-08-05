@@ -6,7 +6,7 @@ interface ExperimentProps {
 }
 
 const Experiment = ({state}: ExperimentProps) => {
-
+    console.log(state)
     return (
         <div className="rounded-lg border border-gray-300 flex flex-row items-center p-6 gap-6">
             <Pill title="Active" variant="primary" />
