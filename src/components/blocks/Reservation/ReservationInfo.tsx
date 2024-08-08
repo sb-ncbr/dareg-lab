@@ -1,10 +1,16 @@
 import User from "../User/User.tsx";
+import TimeSpan from "../TimeSpan/TimeSpan.tsx";
+import {Event} from "../Agenda/AgendaEvent.tsx";
 
-const ReservationInfo = () => {
+interface ReservationInfoProps {
+    reservation: Event;
+}
+
+const ReservationInfo = ({reservation}: ReservationInfoProps) => {
     return (
         <div className="rounded-lg border border-gray-300 p-6">
-            <span>25. 4. 2024 | 14:00 - 15:00</span>
-            <User />
+            <TimeSpan start={reservation.start} end={reservation.end} />
+            <User name={reservation.user} />
         </div>
     )
 }

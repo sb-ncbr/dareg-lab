@@ -23,9 +23,9 @@ export const getPosition = (agendaFrom: Date, time: Date) => {
     return hours * hourHeight + ((time.getMinutes() / 60) * hourHeight);
 };
 
-const events: Event[] = [
-    {id: "asdasdasda-adasda", title: "Meeting with John", start: new Date(2024, 7, 5, 14, 0), end: new Date(2024, 7, 5, 16, 0)},
-    {id: "asdsadasd-asdas", title: "Meeting with John", start: new Date(2024, 7, 5, 17, 0), end: new Date(2024, 7, 5, 18, 30)},
+export const events: Event[] = [
+    {id: "0", title: "Meeting with John", start: new Date(2024, 7, 5, 14, 0), end: new Date(2024, 7, 5, 16, 0), user: "John Doe"},
+    {id: "1", title: "Meeting with John", start: new Date(2024, 7, 5, 17, 0), end: new Date(2024, 7, 5, 18, 30), user: "John Doe"},
 ]
 
 const Agenda = () => {

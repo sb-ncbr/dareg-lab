@@ -10,6 +10,7 @@ export interface Event {
     title: string;
     start: Date;
     end: Date;
+    user: string;
 }
 
 const AgendaEvent = ({ event, agendaFrom }: { event: Event, agendaFrom: Date }) => {
