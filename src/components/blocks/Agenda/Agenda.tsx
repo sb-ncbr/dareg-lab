@@ -20,12 +20,14 @@ export const getPosition = (agendaFrom: Date, time: Date) => {
     to.setMilliseconds(0)
 
     const hours = Math.abs(to.getTime() - start.getTime()) / 36e5 - 1;
-    return hours * hourHeight + ((time.getMinutes() / 60) * hourHeight);
+    return hours * hourHeight + ((time.getMinutes() / 60) * hourHeight) + 24;    // 24 is the padding of the agenda
 };
 
+const d = new Date();
+
 export const events: Event[] = [
-    {id: "0", title: "Meeting with John", start: new Date(2024, 7, 5, 14, 0), end: new Date(2024, 7, 5, 16, 0), user: "John Doe"},
-    {id: "1", title: "Meeting with John", start: new Date(2024, 7, 5, 17, 0), end: new Date(2024, 7, 5, 18, 30), user: "John Doe"},
+    {id: "0", title: "Meeting with John", start: new Date(d.getFullYear(), d.getMonth(), d.getDate(), 14, 0), end: new Date(d.getFullYear(), d.getMonth(), d.getDate(), 16, 0), user: "John Doe"},
+    {id: "1", title: "Meeting with John", start: new Date(d.getFullYear(), d.getMonth(), d.getDate(), 17, 0), end: new Date(d.getFullYear(), d.getMonth(), d.getDate(), 18, 30), user: "John Doe"},
 ]
 
 const Agenda = () => {
@@ -43,12 +45,10 @@ const Agenda = () => {
     }, [scrollContainerRef.current]);
 
     return (
-        <div className="rounded-lg border border-gray-300 h-full w-full p-6">
-            <div className="h-full overflow-y-scroll relative" ref={scrollContainerRef}>
+        <div className="rounded-lg border border-gray-300 p-6 h-full overflow-y-scroll relative" ref={scrollContainerRef}>
                 <CurrentHour agendaFrom={agendaFrom} time={time}/>
                 {hours.map((hour, idx) => <AgendaHour currentTime={time} time={hour} height={hourHeight} key={idx}/>)}
                 {events.map((event, idx) => <AgendaEvent event={event} agendaFrom={agendaFrom} key={idx}/>)}
-            </div>
         </div>
     )
 }

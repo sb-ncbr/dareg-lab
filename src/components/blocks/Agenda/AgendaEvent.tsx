@@ -26,7 +26,7 @@ const AgendaEvent = ({ event, agendaFrom }: { event: Event, agendaFrom: Date }) 
                 position: "absolute",
                 top: start,
                 height: end - start,
-                width: `calc(100% - ${HOUR_WIDTH}px)`,
+                width: `calc(100% - ${HOUR_WIDTH}px - 3rem)`,
                 marginLeft: HOUR_WIDTH,
             }}
             className={twMerge("rounded-lg text-white p-6 cursor-pointer", isNow ? "bg-cyan-800" : "bg-cyan-500")}

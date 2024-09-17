@@ -19,9 +19,9 @@
     },
     "windows": [
       {
-        "title": "datareg",
-        "width": 800,
-        "height": 600
+        "title": "DAREG - Device App",
+        "width": 1400,
+        "height": 1000
       }
     ],
     "security": {

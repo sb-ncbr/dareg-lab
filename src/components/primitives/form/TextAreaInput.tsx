@@ -11,7 +11,7 @@ export interface TextAreaInputProps<TValues> extends TextareaProps {
 const TextAreaInput = <TValues extends object,>({className, fieldName, label, ...props}: TextAreaInputProps<TValues>) => {
     const {field} = useController<TValues>({name: fieldName})
     return (
-        <div className="w-full max-w-md">
+        <div className="w-full">
             <Field>
                 {label && <Label className="text-gray-800 text-lg">{label}</Label>}
                 <Textarea

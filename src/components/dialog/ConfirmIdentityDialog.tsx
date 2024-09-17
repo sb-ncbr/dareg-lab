@@ -55,7 +55,7 @@ const ConfirmIdentityDialog = ({reservation}: { reservation: Event }) => {
                             <Button type="submit">
                                 Confirm
                             </Button>
-                            <TextInput<CodeFormValues> fieldName="code"/>
+                            <TextInput<CodeFormValues> fieldName="code" autoFocus/>
                         </div>
                     </form>
                 </FormProvider>

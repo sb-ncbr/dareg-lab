@@ -10,7 +10,7 @@ const Layout = () => {
 
     return (
         <DialogContextProvider>
-            <div className="grid grid-cols-12 grid-rows-12 h-screen w-screen gap-6 relative p-6">
+            <div className="grid grid-cols-12 h-screen w-screen relative">
                 <SideMenu/>
                 <Outlet/>
             </div>

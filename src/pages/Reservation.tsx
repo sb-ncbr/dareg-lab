@@ -14,10 +14,16 @@ const ReservationPage = () => {
 
     return (
         <Section title="Reservation">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 flex-1">
                 <ReservationInfo reservation={reservation} />
                 <Experiments />
-                <Button onClick={() => setDialog(<ConfirmEndReservationDialog reservation={reservation} />)}>End Reservation</Button>
+                <Button
+                    color="primary"
+                    onClick={() => setDialog(<ConfirmEndReservationDialog reservation={reservation} />)}
+                    className="mt-auto"
+                >
+                    End Reservation
+                </Button>
             </div>
         </Section>
     )

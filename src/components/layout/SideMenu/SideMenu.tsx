@@ -4,11 +4,11 @@ import Ceitec from "../../../ceitec.svg";
 
 const SideMenu = () => {
     return (
-        <div className="bg-cyan-500 text-white p-6 rounded-lg col-span-4 md:col-span-3 row-span-12 flex flex-col justify-between">
+        <div className="bg-cyan-500 text-white p-6 col-span-4 md:col-span-3 row-span-12 flex flex-col justify-between">
             <div className="flex flex-col gap-4">
-                <img src="/ceitec-bic.png" alt="Ceitec - Bic"/>
-                <h1 className="subpixel-antialiased text-2xl font-bold leading-7 sm:truncate sm:text-2xl sm:tracking-tight">DAREG - Device App</h1>
-                <SideMenuSection title="Facility" items={[
+                <a href="/"><img src="/ceitec-bic.png" alt="Ceitec - Bic"/></a>
+                <a href="/"><h1 className="subpixel-antialiased text-2xl font-bold leading-7 sm:truncate sm:text-2xl sm:tracking-tight">DAREG - Device App</h1></a>
+                    <SideMenuSection title="Facility" items={[
                     {title: "Name", item: "Core Facility Biomolecular Interactions and Crystallography"},
                     {
                         title: "Information for users",
