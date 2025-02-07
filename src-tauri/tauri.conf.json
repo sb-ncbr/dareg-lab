@@ -33,7 +33,7 @@
       "identifier": "com.davidkonecny.dareg-lab-client",
       "windows": {
         "webviewInstallMode": {
-          "type": "embedBootstrapper"
+          "type": "offlineInstaller"
         }
       },
       "icon": [
