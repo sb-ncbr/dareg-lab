@@ -17,7 +17,7 @@ interface ExperimentsProps {
 }
 
 const Experiments = ({dataset}: ExperimentsProps) => {
-    const [experiments, setExperiments] = useState<Experiment[]>(dataset.experiments);
+    const [experiments, setExperiments] = useState<Experiment[]>([...dataset.experiments]);
     const [selectedExperimentId, setSelectedExperimentIdx] = useState<string | null>(null);
     const [deletingExperimentId, setDeletingExperimentId] = useState<string | null>(null);
 

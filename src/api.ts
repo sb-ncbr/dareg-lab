@@ -780,7 +780,7 @@ export interface DatasetResponse {
   readonly perms: string;
   readonly shares: string;
   readonly project: BaseModel;
-  readonly experiments: string;
+  readonly experiments: readonly Experiment[];
   readonly dataset_schema: BaseModel;
   readonly modified_by: UserSerializerMinimal;
   readonly onedata_visit_id: string;
