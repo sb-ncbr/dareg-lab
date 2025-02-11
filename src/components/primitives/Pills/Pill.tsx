@@ -1,10 +1,12 @@
 import {twMerge} from "tailwind-merge";
+import {ReactNode} from "react";
 
-export type PillVariant = "primary" | "inverted" | "secondary" | "error";
+export type PillVariant = "primary" | "inverted" | "secondary" | "error" | "success";
 
 interface PillProps {
-    title: string;
+    title: ReactNode;
     variant: PillVariant;
+    className?: string;
 }
 
 const resolveVariant = (variant: PillProps["variant"]) => {
@@ -15,12 +17,16 @@ const resolveVariant = (variant: PillProps["variant"]) => {
             return "bg-white text-cyan-500";
         case "secondary":
             return "bg-cyan-300 text-black";
+        case "success":
+            return "bg-green-500 text-white";
+        case "error":
+            return "bg-red-500 text-white";
     }
 }
 
-const Pill = ({variant, title}: PillProps) => {
+const Pill = ({variant, title, className}: PillProps) => {
     const classes = resolveVariant(variant);
-    return <div className={twMerge("rounded px-2 py-0", classes)}>{title}</div>
+    return <div className={twMerge("rounded px-2 py-1", classes, className)}>{title}</div>
 }
 
 export default Pill;

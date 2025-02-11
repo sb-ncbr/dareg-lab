@@ -1,12 +1,10 @@
 import {useSetDialog} from "../../contexts/DialogContextProvider.tsx";
 import Button from "../primitives/buttons/Button.tsx";
 import {useNavigate} from "react-router-dom";
-import {Event} from "../blocks/Agenda/AgendaEvent.tsx";
-import TimeSpan from "../blocks/TimeSpan/TimeSpan.tsx";
-import User from "../blocks/User/User.tsx";
 import BaseDialog from "./BaseDialog.tsx";
+import {DatasetResponse} from "../../api.ts";
 
-const ConfirmIdentityDialog = ({reservation}: { reservation: Event }) => {
+const ConfirmEndExperimentDialog = ({dataset}: { dataset: DatasetResponse }) => {
     const setDialog = useSetDialog();
     const navigate = useNavigate();
 
@@ -17,11 +15,11 @@ const ConfirmIdentityDialog = ({reservation}: { reservation: Event }) => {
 
     return (
         <BaseDialog
-            title={`End ${reservation.title}`}
+            title={`End ${dataset.name}?`}
             content={
                 <div>
-                    <TimeSpan start={reservation.start} end={reservation.end}/>
-                    <User name={reservation.user}/>
+                    {/*<TimeSpan start={reservation.start} end={reservation.end}/>*/}
+                    {/*<User name={reservation.user}/>*/}
                     <div className="mt-4">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mollis felis urna, a luctus ex
                         egestas
@@ -43,4 +41,4 @@ const ConfirmIdentityDialog = ({reservation}: { reservation: Event }) => {
     )
 }
 
-export default ConfirmIdentityDialog;
+export default ConfirmEndExperimentDialog;

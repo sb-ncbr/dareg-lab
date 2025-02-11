@@ -7,8 +7,8 @@ interface UserProps {
 const User = ({name}: UserProps) => {
     return (
         <div className="flex flex-row items-center gap-2">
-            <UserIcon className="h-6 w-6"/>
-            <span className="font-bold">{name}</span>
+            <UserIcon className="h-4 w-4"/>
+            <span className="font-medium">{name}</span>
         </div>
     )
 }

@@ -1,9 +1,10 @@
 import AgendaHour from "./AgendaHour.tsx";
 import useTime from "../../../hooks/useTime.ts";
-import AgendaEvent, {Event} from "./AgendaEvent.tsx";
+import AgendaEvent from "./AgendaEvent.tsx";
 import CurrentHour from "./CurrentHour.tsx";
 import useAgendaHours from "../../../hooks/useAgendaHours.ts";
 import {useEffect, useRef} from "react";
+import useReservations from "../../../hooks/useReservations.tsx";
 
 const precomputeHours = 12;
 const hourHeight = 100; // Hour size in pixels
@@ -23,14 +24,9 @@ export const getPosition = (agendaFrom: Date, time: Date) => {
     return hours * hourHeight + ((time.getMinutes() / 60) * hourHeight) + 24;    // 24 is the padding of the agenda
 };
 
-const d = new Date();
-
-export const events: Event[] = [
-    {id: "0", title: "Meeting with John", start: new Date(d.getFullYear(), d.getMonth(), d.getDate(), 14, 0), end: new Date(d.getFullYear(), d.getMonth(), d.getDate(), 16, 0), user: "John Doe"},
-    {id: "1", title: "Meeting with John", start: new Date(d.getFullYear(), d.getMonth(), d.getDate(), 17, 0), end: new Date(d.getFullYear(), d.getMonth(), d.getDate(), 18, 30), user: "John Doe"},
-]
-
 const Agenda = () => {
+    const reservations = useReservations();
+
     const time = useTime();
     const hours = useAgendaHours(time, precomputeHours);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -48,7 +44,7 @@ const Agenda = () => {
         <div className="rounded-lg border border-gray-300 p-6 h-full overflow-y-scroll relative" ref={scrollContainerRef}>
                 <CurrentHour agendaFrom={agendaFrom} time={time}/>
                 {hours.map((hour, idx) => <AgendaHour currentTime={time} time={hour} height={hourHeight} key={idx}/>)}
-                {events.map((event, idx) => <AgendaEvent event={event} agendaFrom={agendaFrom} key={idx}/>)}
+                {reservations.map((event, idx) => <AgendaEvent event={event} agendaFrom={agendaFrom} key={idx}/>)}
         </div>
     )
 }

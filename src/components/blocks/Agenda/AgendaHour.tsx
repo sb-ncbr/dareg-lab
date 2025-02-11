@@ -11,10 +11,10 @@ const AgendaHour = ({currentTime, time, height}: { time: Date, currentTime: Date
         : currentTime.getMonth() > time.getMonth();
 
     return (
-        <div className="w-full min-w-52" style={{height}}>
-            <div className="w-full flex flex-row">
+        <div className="w-full" style={{height}}>
+            <div className="w-full flex flex-row items-center ">
                 <div className="flex flex-col">
-                    <span className="text-lg" style={{width: HOUR_WIDTH}}>{formatTime(time, {showMinutes: false})}</span>
+                    <span className="text-lg pl-1" style={{width: HOUR_WIDTH}}>{formatTime(time, {showMinutes: false})}</span>
                     {isNextDay && <span className="text-xs text-cyan-500">+1 day</span>}
                     {isPrevDay && <span className="text-xs text-cyan-500">-1 day</span>}
                 </div>

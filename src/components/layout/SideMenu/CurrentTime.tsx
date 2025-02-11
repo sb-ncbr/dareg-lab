@@ -6,7 +6,7 @@ const CurrentTime = () => {
 
     return <Fragment>
         <span className="font-bold text-4xl">{time.getHours()}:{time.getMinutes()}</span>
-        <span className="font-bold text-lg">{time.getDate()}. {time.getMonth()}. {time.getFullYear()}</span>
+        <span className="font-bold text-lg">{time.getDate()}. {time.getMonth() + 1}. {time.getFullYear()}</span>
     </Fragment>
 }
 

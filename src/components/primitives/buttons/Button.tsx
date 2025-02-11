@@ -2,9 +2,10 @@ import {Button as HeadlessButton, ButtonProps as HeadlessButtonProps} from '@hea
 import {ReactNode} from "react";
 import {twMerge} from "tailwind-merge";
 import {cva, VariantProps} from "class-variance-authority";
+import CircularLoader from "../loaders/CircularLoader.tsx";
 
 const buttonVariants = cva(
-    ["rounded-lg", "px-2", "py-1", "uppercase", "disabled:cursor-not-allowed"],
+    ["rounded-lg", "px-2", "py-1", "uppercase", "disabled:cursor-not-allowed", "flex", "flex-row", "items-center justify-center"],
     {
         variants: {
             size: {
@@ -18,6 +19,9 @@ const buttonVariants = cva(
                 outlined: [""],
                 error: ["bg-red-600", "text-white"],
                 success: ["bg-green-600", "text-white"],
+            },
+            disabled: {
+                true: ["bg-gray-500", "text-gray-200"],
             }
         },
         defaultVariants: {
@@ -26,15 +30,18 @@ const buttonVariants = cva(
         }
     });
 
-interface ButtonProps extends Omit<HeadlessButtonProps, "color">, VariantProps<typeof buttonVariants> {
+interface ButtonProps extends Omit<HeadlessButtonProps, "color">, Omit<VariantProps<typeof buttonVariants>, "disabled"> {
     children: ReactNode;
+    loading?: boolean;
 }
 
-const Button = ({children, className, size, color, ...props}: ButtonProps) => (
+const Button = ({children, className, size, color, loading, disabled, ...props}: ButtonProps) => (
     <HeadlessButton
-        className={twMerge(buttonVariants({className, size, color}))}
+        className={twMerge(buttonVariants({className, size, color, disabled: disabled || loading}))}
+        disabled={loading || disabled}
         {...props}
     >
+        {loading && <CircularLoader />}
         {children}
     </HeadlessButton>
 );

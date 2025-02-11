@@ -6,12 +6,15 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "datareg",
+    "productName": "DAREG Lab Client",
     "version": "0.0.0"
   },
   "tauri": {
     "allowlist": {
       "all": false,
+      "dialog": {
+        "open": true
+      },
       "shell": {
         "all": false,
         "open": true
@@ -19,7 +22,7 @@
     },
     "windows": [
       {
-        "title": "DAREG - Device App",
+        "title": "DAREG Lab Client",
         "width": 1400,
         "height": 1000
       }

@@ -5,51 +5,152 @@ import {z} from "zod";
 import TextInput from "../../../primitives/form/TextInput.tsx";
 import TextAreaInput from "../../../primitives/form/TextAreaInput.tsx";
 import ExperimentData from "./ExperimentData.tsx";
-import FileStatus from "../../../../types/files/FileStatus.ts";
-import IExperiment from "../../../../types/experiments/Experiment.ts";
+import {
+    Experiment, Instrument,
+    StatusEnum,
+    useApiV1ExperimentsPartialUpdate,
+    useApiV1ExperimentsUpdate
+} from "../../../../api.ts";
+import {invoke} from "@tauri-apps/api/tauri";
+import {toast} from "react-toastify";
+import {open} from '@tauri-apps/api/dialog';
+import {FolderOpenIcon} from "@heroicons/react/24/outline";
+import DateDisplayInput from "../../../primitives/form/DateDisplayInput.tsx";
+
 
 const schema = z.object({
+    folder: z.string(),
     name: z.string(),
-    start: z.date().optional(),
-    end: z.date().optional(),
-    note: z.string().optional()
+    note: z.string()
 })
 
 type ExperimentFormValues = z.infer<typeof schema>;
 
 interface ExperimentFormProps {
-    experiment: IExperiment
-    fileStatus: FileStatus | null
-    onSubmit: (data: IExperiment) => void
-    onStart: () => void
-    onEnd: () => void
+    instrument: Instrument;
+    experiment: Experiment;
+    onUpdate: (data: Experiment) => void;
 }
 
-const ExperimentForm = ({experiment, fileStatus, onSubmit, onStart, onEnd}: ExperimentFormProps) => {
+const ExperimentForm = ({instrument, experiment, onUpdate}: ExperimentFormProps) => {
     const methods = useForm<ExperimentFormValues>({
         resolver: zodResolver(schema),
-        values: experiment
+        values: {
+            name: experiment.name ?? "",
+            folder: instrument.default_data_dir ?? "",
+            note: experiment.note ?? ""
+        }
     })
+
+    const {
+        mutate: updateExperiment,
+        isPending: isUpdateExperimentPending,
+        // error: updateExperimentError
+    } = useApiV1ExperimentsUpdate({
+        mutation: {
+            onSuccess: (data) => {
+                onUpdate(data.data);
+                toast.success("Experiment updated successfully");
+            }
+        }
+    })
+
+    const {
+        mutate: partialUpdateExperiment,
+        isPending: isPartialUpdateExperimentPending,
+        // error: partialUpdateExperimentError
+    } = useApiV1ExperimentsPartialUpdate({
+        mutation: {
+            onSuccess: (data) => {
+                onUpdate(data.data);
+            }
+        }
+    })
+
+    const startExperiment = async () => {
+        await invoke("start_upload", {experimentId: experiment.id, directory: methods.getValues("folder")});
+        partialUpdateExperiment({
+            id: experiment.id,
+            data: {
+                status: "running",
+                start_time: new Date().toISOString()
+            }
+        })
+    }
+
+    const endExperiment = async () => {
+        await invoke("stop_upload");
+        partialUpdateExperiment({
+            id: experiment.id,
+            data: {
+                status: "synchronizing",
+                end_time: new Date().toISOString()
+            }
+        })
+    }
+
+    const success = (experimentId: string) => {
+        toast.success("Data uploaded successfully");
+        partialUpdateExperiment({
+            id: experimentId,
+            data: {
+                status: "success",
+            }
+        })
+    }
+
+    const pickFolder = async () => {
+        const selectedFolder = await open({
+            directory: true,
+            multiple: false,
+            defaultPath: instrument.default_data_dir
+        });
+
+        if (typeof selectedFolder !== "string") {
+            return;
+        }
+
+        methods.setValue("folder", selectedFolder);
+    }
+
     const handleSubmit: SubmitHandler<ExperimentFormValues> = (data) => {
-        onSubmit({...experiment, ...data});
+        updateExperiment({
+            id: experiment.id,
+            data: {
+                ...experiment,
+                status: experiment.status === StatusEnum.new ? StatusEnum.prepared : experiment.status,
+                name: data.name,
+                note: data.note
+            }
+        });
     }
 
     return (
         <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(handleSubmit)}>
-                <div className="flex flex-col gap-2 relative">
-                    <TextInput<ExperimentFormValues> fieldName="name" label="Name"/>
-                    <div className="flex flex-row gap-2">
-                        <TextInput<ExperimentFormValues> fieldName="start" label="Start Time" readOnly/>
-                        <TextInput<ExperimentFormValues> fieldName="end" label="End Time" readOnly/>
-                    </div>
-                    <TextAreaInput<ExperimentFormValues> fieldName="note" rows={4} label="Note"/>
-                    <ExperimentData fileStatus={fileStatus} />
-                    {methods.formState.isDirty && <Button type="submit" className="w-full" color="secondary">Save</Button>}
-                    {(experiment.state === "prepared" || experiment.state === "active") && <div className="flex flex-row gap-2">
-                        <Button type="submit" className="w-full" color="success" onClick={onStart}>Start</Button>
-                        <Button type="submit" className="w-full" color="error" onClick={onEnd}>End</Button>
-                    </div>}
+            <form onSubmit={methods.handleSubmit(handleSubmit)} className="h-full flex flex-col gap-2 relative">
+                <TextInput<ExperimentFormValues> fieldName="name" label="Name"/>
+                <div className="flex flex-row gap-2 items-end">
+                    <TextInput<ExperimentFormValues> fieldName="folder" label="Data Folder"/>
+                    <Button type="button" onClick={pickFolder} className="h-[38px]"><FolderOpenIcon className="h-6 w-6" /></Button>
+                </div>
+                <div className="flex flex-row gap-2">
+                    <DateDisplayInput date={experiment.start_time ? new Date(experiment.start_time) : null} label="Start Time" readOnly/>
+                    <DateDisplayInput date={experiment.end_time ? new Date(experiment.end_time) : null} label="End Time" readOnly/>
+                </div>
+                <TextAreaInput<ExperimentFormValues> fieldName="note" rows={4} label="Note"/>
+                <ExperimentData onSuccess={success} onError={success}/>
+                <div className="mt-auto">
+                    {methods.formState.isDirty && <Button type="submit" className="w-full" color="secondary"
+                                                          loading={isUpdateExperimentPending}>Save</Button>}
+                    {(experiment.status === "prepared" || experiment.status === "running") &&
+                        <div className="flex flex-row gap-2">
+                            <Button type="button" className="w-full" color="success" onClick={startExperiment}
+                                    loading={isPartialUpdateExperimentPending}
+                                    disabled={experiment.status !== StatusEnum.prepared}>Start</Button>
+                            <Button type="button" className="w-full" color="error" onClick={endExperiment}
+                                    loading={isPartialUpdateExperimentPending}
+                                    disabled={experiment.status !== StatusEnum.running}>End</Button>
+                        </div>}
                 </div>
             </form>
         </FormProvider>

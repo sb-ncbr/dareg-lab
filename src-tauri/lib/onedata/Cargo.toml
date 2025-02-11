@@ -1,0 +1,9 @@
+[package]
+name = "onedata"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+reqwest = "0.12.12"
+serde_json = "1.0.137"
+serde = { version = "1.0.204", features = ["derive"] }

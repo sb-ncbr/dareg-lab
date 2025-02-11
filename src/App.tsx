@@ -2,6 +2,9 @@ import Layout from "./components/layout/Layout.tsx";
 import AgendaPage from "./pages/Agenda.tsx";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import ReservationPage from "./pages/Reservation.tsx";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import { ToastContainer } from 'react-toastify';
+import ConfigContextProvider from "./contexts/ConfigContextProvider.tsx";
 
 const router = createBrowserRouter([
     {
@@ -19,11 +22,17 @@ const router = createBrowserRouter([
         ],
     },
 ]);
+const queryClient = new QueryClient()
 
-function App() {
-  return (
-      <RouterProvider router={router} />
-  );
-}
+const App = () => {
+    return (
+        <ConfigContextProvider>
+            <QueryClientProvider client={queryClient}>
+                <ToastContainer />
+                <RouterProvider router={router}/>
+            </QueryClientProvider>
+        </ConfigContextProvider>
+    );
+};
 
 export default App;

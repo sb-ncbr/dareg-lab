@@ -1,0 +1,82 @@
+use std::collections::{VecDeque};
+use std::fs;
+use std::os::unix::fs::MetadataExt;
+use std::path::{Path, PathBuf};
+use crate::utils::files::calculate_checksum::calculate_checksum;
+
+pub enum Entry {
+    File(PathBuf, String, u64),
+    Directory(PathBuf),
+}
+
+///
+///
+/// # Arguments
+///
+/// * `directory`:
+/// * `debug`:
+///
+/// returns: VecDeque<Entry, Global>
+///
+/// # Examples
+///
+/// ```
+///
+/// ```
+pub async fn scan_directory(directory: &Path, debug: bool) -> VecDeque<Entry> {
+    let mut files = VecDeque::new();
+    let mut buf = VecDeque::new();
+    buf.push_back(directory.to_path_buf());
+
+    while let Some(path) = buf.pop_front() {
+        let entries = match fs::read_dir(&path) {
+            Ok(entries) => entries,
+            Err(err) => {
+                eprintln!("Failed to read directory {:?}: {}", path, err);
+                continue;
+            }
+        };
+
+        for entry in entries {
+            let entry = match entry {
+                Ok(entry) => entry,
+                Err(err) => {
+                    eprintln!("Failed to read entry: {}", err);
+                    continue;
+                }
+            };
+
+            let path = entry.path();
+            let metadata = match fs::metadata(&path) {
+                Ok(metadata) => metadata,
+                Err(err) => {
+                    eprintln!("Failed to read metadata for {:?}: {}", path, err);
+                    continue;
+                }
+            };
+
+            if metadata.is_file() {
+                if debug {
+                    println!("File: {:?}", path);
+                }
+                match calculate_checksum(&path) {
+                    Ok(checksum) => {
+                        files.push_back(Entry::File(path.clone(), checksum, metadata.size()));
+                    }
+                    Err(err) => {
+                        eprintln!("Failed to calculate checksum for {:?}: {}", path, err);
+                    }
+                }
+            } else if metadata.is_dir() {
+                if debug {
+                    println!("Directory: {:?}", path);
+                }
+                files.push_back(Entry::Directory(path.clone()));
+                buf.push_back(path.clone());
+            } else {
+                println!("Other: {:?}", path);
+            }
+        }
+    }
+    files
+}
