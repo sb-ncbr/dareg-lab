@@ -17,7 +17,7 @@ The data directory is platform dependent. See bellow for platform specific confi
 
 
 ### Windows
-TODO
+`C:\Users\{USER}\AppData\Roaming\com.davidkonecny.dareg-lab-client`
 
 ### MacOs
 `/Users/{USER}/Library/Application Support/com.davidkonecny.dareg-lab-client`
