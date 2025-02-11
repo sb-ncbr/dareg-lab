@@ -6,7 +6,6 @@ export default defineConfig({
         output: {
             target:'./src/api.ts',
             client: "react-query",
-            baseUrl: "http://localhost:8000/"
         },
     },
 });

@@ -673,6 +673,8 @@ export interface FacilitySerializerMinimal {
   email?: string;
   /** @maxLength 200 */
   web?: string;
+  /** @maxLength 200 */
+  logo?: string;
 }
 
 export interface Facility {
@@ -778,7 +780,7 @@ export interface DatasetResponse {
   readonly perms: string;
   readonly shares: string;
   readonly project: BaseModel;
-  experiments: Experiment[];
+  readonly experiments: string;
   readonly dataset_schema: BaseModel;
   readonly modified_by: UserSerializerMinimal;
   readonly onedata_visit_id: string;
@@ -883,7 +885,7 @@ export const apiSchemaRetrieve = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/schema/`,{
+      `/api/schema/`,{
     ...options,
         params: {...params, ...options?.params},}
     );
@@ -891,7 +893,7 @@ export const apiSchemaRetrieve = (
 
 
 export const getApiSchemaRetrieveQueryKey = (params?: ApiSchemaRetrieveParams,) => {
-    return [`http://localhost:8000/api/schema/`, ...(params ? [params]: [])] as const;
+    return [`/api/schema/`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -968,7 +970,7 @@ export const apiV1DatasetsList = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/v1/datasets/`,{
+      `/api/v1/datasets/`,{
     ...options,
         params: {...params, ...options?.params},}
     );
@@ -976,7 +978,7 @@ export const apiV1DatasetsList = (
 
 
 export const getApiV1DatasetsListQueryKey = (params?: ApiV1DatasetsListParams,) => {
-    return [`http://localhost:8000/api/v1/datasets/`, ...(params ? [params]: [])] as const;
+    return [`/api/v1/datasets/`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -1053,7 +1055,7 @@ export const apiV1DatasetsCreate = (
     
     
     return axios.default.post(
-      `http://localhost:8000/api/v1/datasets/`,
+      `/api/v1/datasets/`,
       dataset,options
     );
   }
@@ -1111,13 +1113,13 @@ export const apiV1DatasetsRetrieve = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/v1/datasets/${id}/`,options
+      `/api/v1/datasets/${id}/`,options
     );
   }
 
 
 export const getApiV1DatasetsRetrieveQueryKey = (id: string,) => {
-    return [`http://localhost:8000/api/v1/datasets/${id}/`] as const;
+    return [`/api/v1/datasets/${id}/`] as const;
     }
 
     
@@ -1195,7 +1197,7 @@ export const apiV1DatasetsUpdate = (
     
     
     return axios.default.put(
-      `http://localhost:8000/api/v1/datasets/${id}/`,
+      `/api/v1/datasets/${id}/`,
       dataset,options
     );
   }
@@ -1254,7 +1256,7 @@ export const apiV1DatasetsPartialUpdate = (
     
     
     return axios.default.patch(
-      `http://localhost:8000/api/v1/datasets/${id}/`,
+      `/api/v1/datasets/${id}/`,
       patchedDataset,options
     );
   }
@@ -1312,7 +1314,7 @@ export const apiV1DatasetsDestroy = (
     
     
     return axios.default.delete(
-      `http://localhost:8000/api/v1/datasets/${id}/`,options
+      `/api/v1/datasets/${id}/`,options
     );
   }
 
@@ -1369,13 +1371,13 @@ export const apiV1DatasetsGetByReservationIdRetrieve = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/v1/datasets/${id}/get_by_reservation_id/`,options
+      `/api/v1/datasets/${id}/get_by_reservation_id/`,options
     );
   }
 
 
 export const getApiV1DatasetsGetByReservationIdRetrieveQueryKey = (id: string,) => {
-    return [`http://localhost:8000/api/v1/datasets/${id}/get_by_reservation_id/`] as const;
+    return [`/api/v1/datasets/${id}/get_by_reservation_id/`] as const;
     }
 
     
@@ -1452,7 +1454,7 @@ export const apiV1DatasetsCreateDatasetCreate = (
     
     
     return axios.default.post(
-      `http://localhost:8000/api/v1/datasets/create_dataset/`,
+      `/api/v1/datasets/create_dataset/`,
       dataset,options
     );
   }
@@ -1510,7 +1512,7 @@ export const apiV1DatasetsCreateOnedataFolderCreate = (
     
     
     return axios.default.post(
-      `http://localhost:8000/api/v1/datasets/create_onedata_folder/`,
+      `/api/v1/datasets/create_onedata_folder/`,
       dataset,options
     );
   }
@@ -1568,7 +1570,7 @@ export const apiV1DatasetsCreatePublicShareCreate = (
     
     
     return axios.default.post(
-      `http://localhost:8000/api/v1/datasets/create_public_share/`,
+      `/api/v1/datasets/create_public_share/`,
       dataset,options
     );
   }
@@ -1626,7 +1628,7 @@ export const apiV1ExperimentsList = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/v1/experiments/`,{
+      `/api/v1/experiments/`,{
     ...options,
         params: {...params, ...options?.params},}
     );
@@ -1634,7 +1636,7 @@ export const apiV1ExperimentsList = (
 
 
 export const getApiV1ExperimentsListQueryKey = (params?: ApiV1ExperimentsListParams,) => {
-    return [`http://localhost:8000/api/v1/experiments/`, ...(params ? [params]: [])] as const;
+    return [`/api/v1/experiments/`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -1711,7 +1713,7 @@ export const apiV1ExperimentsCreate = (
     
     
     return axios.default.post(
-      `http://localhost:8000/api/v1/experiments/`,
+      `/api/v1/experiments/`,
       experiment,options
     );
   }
@@ -1769,13 +1771,13 @@ export const apiV1ExperimentsRetrieve = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/v1/experiments/${id}/`,options
+      `/api/v1/experiments/${id}/`,options
     );
   }
 
 
 export const getApiV1ExperimentsRetrieveQueryKey = (id: string,) => {
-    return [`http://localhost:8000/api/v1/experiments/${id}/`] as const;
+    return [`/api/v1/experiments/${id}/`] as const;
     }
 
     
@@ -1853,7 +1855,7 @@ export const apiV1ExperimentsUpdate = (
     
     
     return axios.default.put(
-      `http://localhost:8000/api/v1/experiments/${id}/`,
+      `/api/v1/experiments/${id}/`,
       experiment,options
     );
   }
@@ -1912,7 +1914,7 @@ export const apiV1ExperimentsPartialUpdate = (
     
     
     return axios.default.patch(
-      `http://localhost:8000/api/v1/experiments/${id}/`,
+      `/api/v1/experiments/${id}/`,
       patchedExperiment,options
     );
   }
@@ -1970,7 +1972,7 @@ export const apiV1ExperimentsDestroy = (
     
     
     return axios.default.delete(
-      `http://localhost:8000/api/v1/experiments/${id}/`,options
+      `/api/v1/experiments/${id}/`,options
     );
   }
 
@@ -2027,7 +2029,7 @@ export const apiV1FacilitiesList = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/v1/facilities/`,{
+      `/api/v1/facilities/`,{
     ...options,
         params: {...params, ...options?.params},}
     );
@@ -2035,7 +2037,7 @@ export const apiV1FacilitiesList = (
 
 
 export const getApiV1FacilitiesListQueryKey = (params?: ApiV1FacilitiesListParams,) => {
-    return [`http://localhost:8000/api/v1/facilities/`, ...(params ? [params]: [])] as const;
+    return [`/api/v1/facilities/`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -2112,7 +2114,7 @@ export const apiV1FacilitiesCreate = (
     
     
     return axios.default.post(
-      `http://localhost:8000/api/v1/facilities/`,
+      `/api/v1/facilities/`,
       facility,options
     );
   }
@@ -2170,13 +2172,13 @@ export const apiV1FacilitiesRetrieve = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/v1/facilities/${id}/`,options
+      `/api/v1/facilities/${id}/`,options
     );
   }
 
 
 export const getApiV1FacilitiesRetrieveQueryKey = (id: string,) => {
-    return [`http://localhost:8000/api/v1/facilities/${id}/`] as const;
+    return [`/api/v1/facilities/${id}/`] as const;
     }
 
     
@@ -2254,7 +2256,7 @@ export const apiV1FacilitiesUpdate = (
     
     
     return axios.default.put(
-      `http://localhost:8000/api/v1/facilities/${id}/`,
+      `/api/v1/facilities/${id}/`,
       facility,options
     );
   }
@@ -2313,7 +2315,7 @@ export const apiV1FacilitiesPartialUpdate = (
     
     
     return axios.default.patch(
-      `http://localhost:8000/api/v1/facilities/${id}/`,
+      `/api/v1/facilities/${id}/`,
       patchedFacility,options
     );
   }
@@ -2371,7 +2373,7 @@ export const apiV1FacilitiesDestroy = (
     
     
     return axios.default.delete(
-      `http://localhost:8000/api/v1/facilities/${id}/`,options
+      `/api/v1/facilities/${id}/`,options
     );
   }
 
@@ -2428,7 +2430,7 @@ export const apiV1GroupsList = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/v1/groups/`,{
+      `/api/v1/groups/`,{
     ...options,
         params: {...params, ...options?.params},}
     );
@@ -2436,7 +2438,7 @@ export const apiV1GroupsList = (
 
 
 export const getApiV1GroupsListQueryKey = (params?: ApiV1GroupsListParams,) => {
-    return [`http://localhost:8000/api/v1/groups/`, ...(params ? [params]: [])] as const;
+    return [`/api/v1/groups/`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -2513,7 +2515,7 @@ export const apiV1GroupsCreate = (
     
     
     return axios.default.post(
-      `http://localhost:8000/api/v1/groups/`,
+      `/api/v1/groups/`,
       group,options
     );
   }
@@ -2571,13 +2573,13 @@ export const apiV1GroupsRetrieve = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/v1/groups/${id}/`,options
+      `/api/v1/groups/${id}/`,options
     );
   }
 
 
 export const getApiV1GroupsRetrieveQueryKey = (id: number,) => {
-    return [`http://localhost:8000/api/v1/groups/${id}/`] as const;
+    return [`/api/v1/groups/${id}/`] as const;
     }
 
     
@@ -2655,7 +2657,7 @@ export const apiV1GroupsUpdate = (
     
     
     return axios.default.put(
-      `http://localhost:8000/api/v1/groups/${id}/`,
+      `/api/v1/groups/${id}/`,
       group,options
     );
   }
@@ -2714,7 +2716,7 @@ export const apiV1GroupsPartialUpdate = (
     
     
     return axios.default.patch(
-      `http://localhost:8000/api/v1/groups/${id}/`,
+      `/api/v1/groups/${id}/`,
       patchedGroup,options
     );
   }
@@ -2772,7 +2774,7 @@ export const apiV1GroupsDestroy = (
     
     
     return axios.default.delete(
-      `http://localhost:8000/api/v1/groups/${id}/`,options
+      `/api/v1/groups/${id}/`,options
     );
   }
 
@@ -2826,7 +2828,7 @@ export const apiV1InstrumentList = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/v1/instrument/`,{
+      `/api/v1/instrument/`,{
     ...options,
         params: {...params, ...options?.params},}
     );
@@ -2834,7 +2836,7 @@ export const apiV1InstrumentList = (
 
 
 export const getApiV1InstrumentListQueryKey = (params?: ApiV1InstrumentListParams,) => {
-    return [`http://localhost:8000/api/v1/instrument/`, ...(params ? [params]: [])] as const;
+    return [`/api/v1/instrument/`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -2908,7 +2910,7 @@ export const apiV1InstrumentCreate = (
     
     
     return axios.default.post(
-      `http://localhost:8000/api/v1/instrument/`,
+      `/api/v1/instrument/`,
       instrument,options
     );
   }
@@ -2963,13 +2965,13 @@ export const apiV1InstrumentRetrieve = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/v1/instrument/${id}/`,options
+      `/api/v1/instrument/${id}/`,options
     );
   }
 
 
 export const getApiV1InstrumentRetrieveQueryKey = (id: string,) => {
-    return [`http://localhost:8000/api/v1/instrument/${id}/`] as const;
+    return [`/api/v1/instrument/${id}/`] as const;
     }
 
     
@@ -3044,7 +3046,7 @@ export const apiV1InstrumentUpdate = (
     
     
     return axios.default.put(
-      `http://localhost:8000/api/v1/instrument/${id}/`,
+      `/api/v1/instrument/${id}/`,
       instrument,options
     );
   }
@@ -3100,7 +3102,7 @@ export const apiV1InstrumentPartialUpdate = (
     
     
     return axios.default.patch(
-      `http://localhost:8000/api/v1/instrument/${id}/`,
+      `/api/v1/instrument/${id}/`,
       patchedInstrument,options
     );
   }
@@ -3155,7 +3157,7 @@ export const apiV1InstrumentDestroy = (
     
     
     return axios.default.delete(
-      `http://localhost:8000/api/v1/instrument/${id}/`,options
+      `/api/v1/instrument/${id}/`,options
     );
   }
 
@@ -3209,13 +3211,13 @@ export const apiV1InstrumentMetadataRetrieve = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/v1/instrument/metadata/`,options
+      `/api/v1/instrument/metadata/`,options
     );
   }
 
 
 export const getApiV1InstrumentMetadataRetrieveQueryKey = () => {
-    return [`http://localhost:8000/api/v1/instrument/metadata/`] as const;
+    return [`/api/v1/instrument/metadata/`] as const;
     }
 
     
@@ -3289,7 +3291,7 @@ export const apiV1ProfileList = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/v1/profile/`,{
+      `/api/v1/profile/`,{
     ...options,
         params: {...params, ...options?.params},}
     );
@@ -3297,7 +3299,7 @@ export const apiV1ProfileList = (
 
 
 export const getApiV1ProfileListQueryKey = (params?: ApiV1ProfileListParams,) => {
-    return [`http://localhost:8000/api/v1/profile/`, ...(params ? [params]: [])] as const;
+    return [`/api/v1/profile/`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -3371,7 +3373,7 @@ export const apiV1ProfileCreate = (
     
     
     return axios.default.post(
-      `http://localhost:8000/api/v1/profile/`,
+      `/api/v1/profile/`,
       profile,options
     );
   }
@@ -3426,13 +3428,13 @@ export const apiV1ProfileRetrieve = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/v1/profile/${id}/`,options
+      `/api/v1/profile/${id}/`,options
     );
   }
 
 
 export const getApiV1ProfileRetrieveQueryKey = (id: string,) => {
-    return [`http://localhost:8000/api/v1/profile/${id}/`] as const;
+    return [`/api/v1/profile/${id}/`] as const;
     }
 
     
@@ -3507,7 +3509,7 @@ export const apiV1ProfileUpdate = (
     
     
     return axios.default.put(
-      `http://localhost:8000/api/v1/profile/${id}/`,
+      `/api/v1/profile/${id}/`,
       profile,options
     );
   }
@@ -3563,7 +3565,7 @@ export const apiV1ProfilePartialUpdate = (
     
     
     return axios.default.patch(
-      `http://localhost:8000/api/v1/profile/${id}/`,
+      `/api/v1/profile/${id}/`,
       patchedProfile,options
     );
   }
@@ -3618,7 +3620,7 @@ export const apiV1ProfileDestroy = (
     
     
     return axios.default.delete(
-      `http://localhost:8000/api/v1/profile/${id}/`,options
+      `/api/v1/profile/${id}/`,options
     );
   }
 
@@ -3675,7 +3677,7 @@ export const apiV1ProjectsList = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/v1/projects/`,{
+      `/api/v1/projects/`,{
     ...options,
         params: {...params, ...options?.params},}
     );
@@ -3683,7 +3685,7 @@ export const apiV1ProjectsList = (
 
 
 export const getApiV1ProjectsListQueryKey = (params?: ApiV1ProjectsListParams,) => {
-    return [`http://localhost:8000/api/v1/projects/`, ...(params ? [params]: [])] as const;
+    return [`/api/v1/projects/`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -3760,7 +3762,7 @@ export const apiV1ProjectsCreate = (
     
     
     return axios.default.post(
-      `http://localhost:8000/api/v1/projects/`,
+      `/api/v1/projects/`,
       project,options
     );
   }
@@ -3818,13 +3820,13 @@ export const apiV1ProjectsRetrieve = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/v1/projects/${id}/`,options
+      `/api/v1/projects/${id}/`,options
     );
   }
 
 
 export const getApiV1ProjectsRetrieveQueryKey = (id: string,) => {
-    return [`http://localhost:8000/api/v1/projects/${id}/`] as const;
+    return [`/api/v1/projects/${id}/`] as const;
     }
 
     
@@ -3902,7 +3904,7 @@ export const apiV1ProjectsUpdate = (
     
     
     return axios.default.put(
-      `http://localhost:8000/api/v1/projects/${id}/`,
+      `/api/v1/projects/${id}/`,
       project,options
     );
   }
@@ -3961,7 +3963,7 @@ export const apiV1ProjectsPartialUpdate = (
     
     
     return axios.default.patch(
-      `http://localhost:8000/api/v1/projects/${id}/`,
+      `/api/v1/projects/${id}/`,
       patchedProject,options
     );
   }
@@ -4019,7 +4021,7 @@ export const apiV1ProjectsDestroy = (
     
     
     return axios.default.delete(
-      `http://localhost:8000/api/v1/projects/${id}/`,options
+      `/api/v1/projects/${id}/`,options
     );
   }
 
@@ -4073,7 +4075,7 @@ export const apiV1ReservationRetrieve = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/v1/reservation/`,{
+      `/api/v1/reservation/`,{
     ...options,
         params: {...params, ...options?.params},}
     );
@@ -4081,7 +4083,7 @@ export const apiV1ReservationRetrieve = (
 
 
 export const getApiV1ReservationRetrieveQueryKey = (params: ApiV1ReservationRetrieveParams,) => {
-    return [`http://localhost:8000/api/v1/reservation/`, ...(params ? [params]: [])] as const;
+    return [`/api/v1/reservation/`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -4155,7 +4157,7 @@ export const apiV1SchemasList = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/v1/schemas/`,{
+      `/api/v1/schemas/`,{
     ...options,
         params: {...params, ...options?.params},}
     );
@@ -4163,7 +4165,7 @@ export const apiV1SchemasList = (
 
 
 export const getApiV1SchemasListQueryKey = (params?: ApiV1SchemasListParams,) => {
-    return [`http://localhost:8000/api/v1/schemas/`, ...(params ? [params]: [])] as const;
+    return [`/api/v1/schemas/`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -4237,7 +4239,7 @@ export const apiV1SchemasCreate = (
     
     
     return axios.default.post(
-      `http://localhost:8000/api/v1/schemas/`,
+      `/api/v1/schemas/`,
       schema,options
     );
   }
@@ -4292,13 +4294,13 @@ export const apiV1SchemasRetrieve = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/v1/schemas/${id}/`,options
+      `/api/v1/schemas/${id}/`,options
     );
   }
 
 
 export const getApiV1SchemasRetrieveQueryKey = (id: string,) => {
-    return [`http://localhost:8000/api/v1/schemas/${id}/`] as const;
+    return [`/api/v1/schemas/${id}/`] as const;
     }
 
     
@@ -4373,7 +4375,7 @@ export const apiV1SchemasUpdate = (
     
     
     return axios.default.put(
-      `http://localhost:8000/api/v1/schemas/${id}/`,
+      `/api/v1/schemas/${id}/`,
       schema,options
     );
   }
@@ -4429,7 +4431,7 @@ export const apiV1SchemasPartialUpdate = (
     
     
     return axios.default.patch(
-      `http://localhost:8000/api/v1/schemas/${id}/`,
+      `/api/v1/schemas/${id}/`,
       patchedSchema,options
     );
   }
@@ -4484,7 +4486,7 @@ export const apiV1SchemasDestroy = (
     
     
     return axios.default.delete(
-      `http://localhost:8000/api/v1/schemas/${id}/`,options
+      `/api/v1/schemas/${id}/`,options
     );
   }
 
@@ -4532,6 +4534,60 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       return useMutation(mutationOptions);
     }
     
+export const apiV1TempTokenCreate = (
+    id: string, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<void>> => {
+    
+    
+    return axios.default.post(
+      `/api/v1/temp-token/${id}/`,undefined,options
+    );
+  }
+
+
+
+export const getApiV1TempTokenCreateMutationOptions = <TData = Awaited<ReturnType<typeof apiV1TempTokenCreate>>, TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: string}, TContext>, axios?: AxiosRequestConfig}
+) => {
+const mutationKey = ['apiV1TempTokenCreate'];
+const {mutation: mutationOptions, axios: axiosOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, axios: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof apiV1TempTokenCreate>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  apiV1TempTokenCreate(id,axiosOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions } as UseMutationOptions<TData, TError,{id: string}, TContext>}
+
+    export type ApiV1TempTokenCreateMutationResult = NonNullable<Awaited<ReturnType<typeof apiV1TempTokenCreate>>>
+    
+    export type ApiV1TempTokenCreateMutationError = AxiosError<unknown>
+
+    export const useApiV1TempTokenCreate = <TData = Awaited<ReturnType<typeof apiV1TempTokenCreate>>, TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: string}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationResult<
+        TData,
+        TError,
+        {id: string},
+        TContext
+      > => {
+
+      const mutationOptions = getApiV1TempTokenCreateMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
 /**
  * API endpoint that allows users to be viewed or edited.
  */
@@ -4541,7 +4597,7 @@ export const apiV1UsersList = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/v1/users/`,{
+      `/api/v1/users/`,{
     ...options,
         params: {...params, ...options?.params},}
     );
@@ -4549,7 +4605,7 @@ export const apiV1UsersList = (
 
 
 export const getApiV1UsersListQueryKey = (params?: ApiV1UsersListParams,) => {
-    return [`http://localhost:8000/api/v1/users/`, ...(params ? [params]: [])] as const;
+    return [`/api/v1/users/`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -4626,7 +4682,7 @@ export const apiV1UsersCreate = (
     
     
     return axios.default.post(
-      `http://localhost:8000/api/v1/users/`,
+      `/api/v1/users/`,
       user,options
     );
   }
@@ -4684,13 +4740,13 @@ export const apiV1UsersRetrieve = (
     
     
     return axios.default.get(
-      `http://localhost:8000/api/v1/users/${id}/`,options
+      `/api/v1/users/${id}/`,options
     );
   }
 
 
 export const getApiV1UsersRetrieveQueryKey = (id: number,) => {
-    return [`http://localhost:8000/api/v1/users/${id}/`] as const;
+    return [`/api/v1/users/${id}/`] as const;
     }
 
     
@@ -4768,7 +4824,7 @@ export const apiV1UsersUpdate = (
     
     
     return axios.default.put(
-      `http://localhost:8000/api/v1/users/${id}/`,
+      `/api/v1/users/${id}/`,
       user,options
     );
   }
@@ -4827,7 +4883,7 @@ export const apiV1UsersPartialUpdate = (
     
     
     return axios.default.patch(
-      `http://localhost:8000/api/v1/users/${id}/`,
+      `/api/v1/users/${id}/`,
       patchedUser,options
     );
   }
@@ -4885,7 +4941,7 @@ export const apiV1UsersDestroy = (
     
     
     return axios.default.delete(
-      `http://localhost:8000/api/v1/users/${id}/`,options
+      `/api/v1/users/${id}/`,options
     );
   }
 
@@ -4939,13 +4995,13 @@ export const dataciteApiV1DoisRetrieve = (
     
     
     return axios.default.get(
-      `http://localhost:8000/datacite-api/v1/dois/`,options
+      `/datacite-api/v1/dois/`,options
     );
   }
 
 
 export const getDataciteApiV1DoisRetrieveQueryKey = () => {
-    return [`http://localhost:8000/datacite-api/v1/dois/`] as const;
+    return [`/datacite-api/v1/dois/`] as const;
     }
 
     
@@ -5019,7 +5075,7 @@ export const dataciteApiV1DoisCreate = (
     
     
     return axios.default.post(
-      `http://localhost:8000/datacite-api/v1/dois/`,undefined,options
+      `/datacite-api/v1/dois/`,undefined,options
     );
   }
 
@@ -5073,7 +5129,7 @@ export const dataciteApiV1DoisUpdate = (
     
     
     return axios.default.put(
-      `http://localhost:8000/datacite-api/v1/dois/`,undefined,options
+      `/datacite-api/v1/dois/`,undefined,options
     );
   }
 
@@ -5127,7 +5183,7 @@ export const dataciteApiV1DoisDestroy = (
     
     
     return axios.default.delete(
-      `http://localhost:8000/datacite-api/v1/dois/`,options
+      `/datacite-api/v1/dois/`,options
     );
   }
 
@@ -5181,13 +5237,13 @@ export const onedataApiV1FilesRetrieve = (
     
     
     return axios.default.get(
-      `http://localhost:8000/onedata-api/v1/files/`,options
+      `/onedata-api/v1/files/`,options
     );
   }
 
 
 export const getOnedataApiV1FilesRetrieveQueryKey = () => {
-    return [`http://localhost:8000/onedata-api/v1/files/`] as const;
+    return [`/onedata-api/v1/files/`] as const;
     }
 
     
@@ -5261,7 +5317,7 @@ export const onedataApiV1FilesCreate = (
     
     
     return axios.default.post(
-      `http://localhost:8000/onedata-api/v1/files/`,undefined,options
+      `/onedata-api/v1/files/`,undefined,options
     );
   }
 
@@ -5305,302 +5361,6 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       > => {
 
       const mutationOptions = getOnedataApiV1FilesCreateMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    
-export const proxyRetrieve = (
-    path: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<void>> => {
-    
-    
-    return axios.default.get(
-      `http://localhost:8000/proxy/${path}`,options
-    );
-  }
-
-
-export const getProxyRetrieveQueryKey = (path: string,) => {
-    return [`http://localhost:8000/proxy/${path}`] as const;
-    }
-
-    
-export const getProxyRetrieveQueryOptions = <TData = Awaited<ReturnType<typeof proxyRetrieve>>, TError = AxiosError<unknown>>(path: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof proxyRetrieve>>, TError, TData>>, axios?: AxiosRequestConfig}
-) => {
-
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getProxyRetrieveQueryKey(path);
-
-  
-
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof proxyRetrieve>>> = ({ signal }) => proxyRetrieve(path, { signal, ...axiosOptions });
-
-      
-
-      
-
-   return  { queryKey, queryFn, enabled: !!(path), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof proxyRetrieve>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type ProxyRetrieveQueryResult = NonNullable<Awaited<ReturnType<typeof proxyRetrieve>>>
-export type ProxyRetrieveQueryError = AxiosError<unknown>
-
-
-export function useProxyRetrieve<TData = Awaited<ReturnType<typeof proxyRetrieve>>, TError = AxiosError<unknown>>(
- path: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof proxyRetrieve>>, TError, TData>> & Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof proxyRetrieve>>,
-          TError,
-          TData
-        > , 'initialData'
-      >, axios?: AxiosRequestConfig}
-
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useProxyRetrieve<TData = Awaited<ReturnType<typeof proxyRetrieve>>, TError = AxiosError<unknown>>(
- path: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof proxyRetrieve>>, TError, TData>> & Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof proxyRetrieve>>,
-          TError,
-          TData
-        > , 'initialData'
-      >, axios?: AxiosRequestConfig}
-
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useProxyRetrieve<TData = Awaited<ReturnType<typeof proxyRetrieve>>, TError = AxiosError<unknown>>(
- path: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof proxyRetrieve>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
-export function useProxyRetrieve<TData = Awaited<ReturnType<typeof proxyRetrieve>>, TError = AxiosError<unknown>>(
- path: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof proxyRetrieve>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-
-  const queryOptions = getProxyRetrieveQueryOptions(path,options)
-
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
-
-  return query;
-}
-
-
-
-
-export const proxyCreate = (
-    path: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<void>> => {
-    
-    
-    return axios.default.post(
-      `http://localhost:8000/proxy/${path}`,undefined,options
-    );
-  }
-
-
-
-export const getProxyCreateMutationOptions = <TData = Awaited<ReturnType<typeof proxyCreate>>, TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{path: string}, TContext>, axios?: AxiosRequestConfig}
-) => {
-const mutationKey = ['proxyCreate'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof proxyCreate>>, {path: string}> = (props) => {
-          const {path} = props ?? {};
-
-          return  proxyCreate(path,axiosOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions } as UseMutationOptions<TData, TError,{path: string}, TContext>}
-
-    export type ProxyCreateMutationResult = NonNullable<Awaited<ReturnType<typeof proxyCreate>>>
-    
-    export type ProxyCreateMutationError = AxiosError<unknown>
-
-    export const useProxyCreate = <TData = Awaited<ReturnType<typeof proxyCreate>>, TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{path: string}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationResult<
-        TData,
-        TError,
-        {path: string},
-        TContext
-      > => {
-
-      const mutationOptions = getProxyCreateMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    
-export const proxyUpdate = (
-    path: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<void>> => {
-    
-    
-    return axios.default.put(
-      `http://localhost:8000/proxy/${path}`,undefined,options
-    );
-  }
-
-
-
-export const getProxyUpdateMutationOptions = <TData = Awaited<ReturnType<typeof proxyUpdate>>, TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{path: string}, TContext>, axios?: AxiosRequestConfig}
-) => {
-const mutationKey = ['proxyUpdate'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof proxyUpdate>>, {path: string}> = (props) => {
-          const {path} = props ?? {};
-
-          return  proxyUpdate(path,axiosOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions } as UseMutationOptions<TData, TError,{path: string}, TContext>}
-
-    export type ProxyUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof proxyUpdate>>>
-    
-    export type ProxyUpdateMutationError = AxiosError<unknown>
-
-    export const useProxyUpdate = <TData = Awaited<ReturnType<typeof proxyUpdate>>, TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{path: string}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationResult<
-        TData,
-        TError,
-        {path: string},
-        TContext
-      > => {
-
-      const mutationOptions = getProxyUpdateMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    
-export const proxyPartialUpdate = (
-    path: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<void>> => {
-    
-    
-    return axios.default.patch(
-      `http://localhost:8000/proxy/${path}`,undefined,options
-    );
-  }
-
-
-
-export const getProxyPartialUpdateMutationOptions = <TData = Awaited<ReturnType<typeof proxyPartialUpdate>>, TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{path: string}, TContext>, axios?: AxiosRequestConfig}
-) => {
-const mutationKey = ['proxyPartialUpdate'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof proxyPartialUpdate>>, {path: string}> = (props) => {
-          const {path} = props ?? {};
-
-          return  proxyPartialUpdate(path,axiosOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions } as UseMutationOptions<TData, TError,{path: string}, TContext>}
-
-    export type ProxyPartialUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof proxyPartialUpdate>>>
-    
-    export type ProxyPartialUpdateMutationError = AxiosError<unknown>
-
-    export const useProxyPartialUpdate = <TData = Awaited<ReturnType<typeof proxyPartialUpdate>>, TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{path: string}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationResult<
-        TData,
-        TError,
-        {path: string},
-        TContext
-      > => {
-
-      const mutationOptions = getProxyPartialUpdateMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    
-export const proxyDestroy = (
-    path: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<void>> => {
-    
-    
-    return axios.default.delete(
-      `http://localhost:8000/proxy/${path}`,options
-    );
-  }
-
-
-
-export const getProxyDestroyMutationOptions = <TData = Awaited<ReturnType<typeof proxyDestroy>>, TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{path: string}, TContext>, axios?: AxiosRequestConfig}
-) => {
-const mutationKey = ['proxyDestroy'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof proxyDestroy>>, {path: string}> = (props) => {
-          const {path} = props ?? {};
-
-          return  proxyDestroy(path,axiosOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions } as UseMutationOptions<TData, TError,{path: string}, TContext>}
-
-    export type ProxyDestroyMutationResult = NonNullable<Awaited<ReturnType<typeof proxyDestroy>>>
-    
-    export type ProxyDestroyMutationError = AxiosError<unknown>
-
-    export const useProxyDestroy = <TData = Awaited<ReturnType<typeof proxyDestroy>>, TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{path: string}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationResult<
-        TData,
-        TError,
-        {path: string},
-        TContext
-      > => {
-
-      const mutationOptions = getProxyDestroyMutationOptions(options);
 
       return useMutation(mutationOptions);
     }

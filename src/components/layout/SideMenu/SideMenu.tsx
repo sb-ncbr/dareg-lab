@@ -2,20 +2,27 @@ import SideMenuSection from "./SideMenuSection.tsx";
 import CurrentTime from "./CurrentTime.tsx";
 import Ceitec from "../../../ceitec.svg";
 import {useApiV1InstrumentMetadataRetrieve} from "../../../api.ts";
-import {invoke} from "@tauri-apps/api/tauri";
+import {useSetDialog} from "../../../contexts/DialogContextProvider.tsx";
+import {Button} from "@headlessui/react";
+import InfoDialog from "../../dialog/InfoDialog.tsx";
+import {InformationCircleIcon} from "@heroicons/react/24/outline";
 
 const SideMenu = () => {
     const {data} = useApiV1InstrumentMetadataRetrieve();
     const instrument = data?.data;
+
+    const setDialog = useSetDialog();
+
     return (
         <div className="bg-cyan-500 text-white p-6 col-span-4 md:col-span-3 row-span-12 flex flex-col justify-between">
             <div className="flex flex-col gap-4">
-                <a href="/" onClick={async () => {
-                    await invoke("upload_file", {one_data_directory_id: "", directory: "/Users/davidkonecny/Documents/school/diplomova-prace/datareg/src-tauri/data"});
-                }}><img src="/ceitec-bic.png" alt="Ceitec - Bic"/></a>
-                <a href="/"><h1
-                    className="subpixel-antialiased text-2xl font-bold leading-7 sm:truncate sm:text-2xl sm:tracking-tight">DAREG
-                    Lab Client</h1></a>
+                <a href="/"><img src="/ceitec-bic.png" alt="Ceitec - Bic"/></a>
+                <div className="flex flex-row items-center gap-2 justify-between">
+                    <a href="/"><h1
+                        className="subpixel-antialiased text-2xl font-bold leading-7 sm:truncate sm:text-2xl sm:tracking-tight">DAREG
+                        Lab Client</h1></a>
+                    <Button onClick={() => setDialog(<InfoDialog/>)}><InformationCircleIcon className="w-6 h-6" strokeWidth="2" /></Button>
+                </div>
                 {instrument ? <SideMenuSection title="Facility" items={[
                     {title: "Name", item: instrument.facility?.name},
                     {

@@ -1,12 +1,14 @@
-import {Fragment, PropsWithChildren, useEffect, useState} from "react";
+import {createContext, PropsWithChildren, useContext, useEffect, useState} from "react";
 import {invoke} from "@tauri-apps/api/tauri";
 import axios, {InternalAxiosRequestConfig} from "axios";
 import EmptyLayout from "../components/layout/EmptyLayout.tsx";
 
 interface Config {
     token: string;
-    provider_host: string;
+    dareg_url: string;
 }
+
+const configContext = createContext<Config | null>(null);
 
 const ConfigContextProvider = ({children}: PropsWithChildren) => {
     const [config, setConfig] = useState<Config | null>(null);
@@ -28,20 +30,23 @@ const ConfigContextProvider = ({children}: PropsWithChildren) => {
 
         const authorization = (requestConfig: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
             requestConfig.headers.setAuthorization(`Token ${config.token}`);
+            requestConfig.baseURL = config.dareg_url;
             return requestConfig;
         }
-        const handle = axios.interceptors.request.use(authorization);
+        const authorizationInterceptor = axios.interceptors.request.use(authorization);
 
         return () => {
-            axios.interceptors.request.eject(handle);
+            axios.interceptors.request.eject(authorizationInterceptor);
         };
     }, [config]);
 
     return (
-        <Fragment>
+        <configContext.Provider value={config}>
             {config ? children : <EmptyLayout />}
-        </Fragment>
+        </configContext.Provider>
     )
 }
+
+export const useConfig = () => useContext(configContext)!;
 
 export default ConfigContextProvider;

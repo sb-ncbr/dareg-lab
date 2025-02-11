@@ -5,6 +5,8 @@ import ReservationPage from "./pages/Reservation.tsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import { ToastContainer } from 'react-toastify';
 import ConfigContextProvider from "./contexts/ConfigContextProvider.tsx";
+import {useEffect} from "react";
+import {configDir} from "@tauri-apps/api/path";
 
 const router = createBrowserRouter([
     {
@@ -25,6 +27,13 @@ const router = createBrowserRouter([
 const queryClient = new QueryClient()
 
 const App = () => {
+
+    useEffect(() => {
+        configDir().then((dir) => {
+            console.log(dir);
+        })
+    }, []);
+
     return (
         <ConfigContextProvider>
             <QueryClientProvider client={queryClient}>
