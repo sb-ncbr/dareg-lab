@@ -1,6 +1,9 @@
 use std::collections::{VecDeque};
 use std::fs;
+#[cfg(target_family = "unix")]
 use std::os::unix::fs::MetadataExt;
+#[cfg(target_family = "windows")]
+use std::os::windows::fs::MetadataExt;
 use std::path::{Path, PathBuf};
 use crate::utils::files::calculate_checksum::calculate_checksum;
 
@@ -61,7 +64,7 @@ pub async fn scan_directory(directory: &Path, debug: bool) -> VecDeque<Entry> {
                 }
                 match calculate_checksum(&path) {
                     Ok(checksum) => {
-                        files.push_back(Entry::File(path.clone(), checksum, metadata.size()));
+                        files.push_back(Entry::File(path.clone(), checksum, metadata.len()));
                     }
                     Err(err) => {
                         eprintln!("Failed to calculate checksum for {:?}: {}", path, err);
