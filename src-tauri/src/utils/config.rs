@@ -1,5 +1,5 @@
-use std::fs;
 use serde::{Deserialize, Serialize};
+use std::fs;
 use tauri::AppHandle;
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
@@ -15,7 +15,7 @@ pub fn load_config(handle: &AppHandle) -> Result<Config, String> {
     };
 
     // Read the file contents into a string
-    let file_content = match fs::read_to_string(path)  {
+    let file_content = match fs::read_to_string(path) {
         Ok(content) => content,
         Err(e) => {
             return Err(e.to_string());

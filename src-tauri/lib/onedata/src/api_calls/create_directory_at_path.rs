@@ -1,8 +1,7 @@
-
 use crate::types::files::CreateFileResponse;
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
 use std::io::{self};
-use std::path::{Path};
+use std::path::Path;
 
 /// Uploads a file in chunks to the specified endpoint.
 ///
@@ -31,7 +30,9 @@ pub async fn create_directory_at_path(
     // Define the endpoint URL
     let url = format!(
         "{}/data/{}/path/{}?type=DIR",
-        provider_host, space_id, path.to_string_lossy()
+        provider_host,
+        space_id,
+        path.to_string_lossy()
     );
 
     // Upload the chunk
@@ -44,7 +45,8 @@ pub async fn create_directory_at_path(
 
         println!(
             "Directory {} created successfully with ID: {}",
-            path.display(), parsed_response.file_id
+            path.display(),
+            parsed_response.file_id
         );
 
         Ok(parsed_response)

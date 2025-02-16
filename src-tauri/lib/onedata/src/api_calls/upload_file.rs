@@ -17,6 +17,7 @@ pub async fn upload_file_in_chunks(
     provider_host: &String,
     file_id: &str,
     chunk_size: usize,
+    on_chunk_uploaded: Box<dyn Fn(u64, u64) + Send + 'static>
 ) -> Result<(), Box<dyn std::error::Error>> {
     // Open the file
     let mut file = File::open(file_path)?;
@@ -67,12 +68,13 @@ pub async fn upload_file_in_chunks(
             let response_text = response.text().await?;
             return Err(Box::new(io::Error::new(
                 io::ErrorKind::Other,
-                format!("Failed to upload chunk"),
+                format!("Failed to upload chunk {}", response_text),
             )));
         }
 
         // Update the offset
         offset += bytes_to_read as u64;
+        on_chunk_uploaded(offset, file_size);
     }
 
     println!("File uploaded successfully!");

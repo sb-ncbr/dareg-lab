@@ -1,20 +1,20 @@
 import Pill from "../../primitives/Pills/Pill.tsx";
-import FileEntry from "../../../types/files/FileEntry.ts";
 import prettyBytes from "pretty-bytes";
+import {SyncingFile} from "../../../types/files/SyncingFile.ts";
 
 interface FileCardProps {
-    fileEntry: FileEntry;
+    fileEntry: SyncingFile;
 }
 
 const FileCard = ({fileEntry}: FileCardProps) => {
-    const filename = fileEntry.path.split("/").pop();
+    const filename = fileEntry.entry.path.split("/").pop();
     return (
         <div className="flex flex-col">
             <h4 className="text-lg font-semibold">{filename}</h4>
-            <small>{fileEntry.path}</small>
+            <small>{fileEntry.entry.path}</small>
             <div className="flex flex-row gap-2">
-                <span>{prettyBytes(fileEntry.size)} / 588 MB</span>
-                <Pill title="Synchronizing" variant="primary" />
+                <span>{prettyBytes(fileEntry.entry.size * fileEntry.progress)} / {prettyBytes(fileEntry.entry.size)}</span>
+                <Pill title={fileEntry.status} variant="primary" />
             </div>
         </div>
     )

@@ -1,22 +1,23 @@
+use crate::utils::config::Config;
 use std::collections::VecDeque;
 use std::path::PathBuf;
 use std::sync::Arc;
 use tokio::sync::Mutex;
 use tokio::task::JoinHandle;
-use crate::utils::config::Config;
 
 pub struct AppData {
     pub config: Config,
 }
 
+#[derive(Debug)]
 pub enum Task {
     CreateFile(PathBuf),
-    ModifyFile,
-    MoveFile,
-    DeleteFile,
+    ModifyFile(PathBuf),
+    MoveFile(PathBuf),
+    DeleteFile(PathBuf),
     CreateDirectory(PathBuf),
-    MoveDirectory,
-    DeleteDirectory,
+    MoveDirectory(PathBuf),
+    DeleteDirectory(PathBuf),
 }
 
 #[derive(Debug, PartialEq)]
@@ -31,5 +32,5 @@ pub struct State {
     pub upload_handle: Mutex<Option<JoinHandle<()>>>,
     pub tasks: Arc<Mutex<VecDeque<Task>>>,
     pub status: Arc<Mutex<Status>>,
-    pub experiment_id: Arc<Mutex<String>>
+    pub experiment_id: Arc<Mutex<String>>,
 }

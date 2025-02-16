@@ -1,15 +1,29 @@
-use std::collections::{VecDeque};
+use crate::utils::files::calculate_checksum::calculate_checksum;
+use serde::Serialize;
+use std::collections::VecDeque;
 use std::fs;
 #[cfg(target_family = "unix")]
 use std::os::unix::fs::MetadataExt;
 #[cfg(target_family = "windows")]
 use std::os::windows::fs::MetadataExt;
 use std::path::{Path, PathBuf};
-use crate::utils::files::calculate_checksum::calculate_checksum;
 
+#[derive(Serialize, Clone)]
+pub struct FileEntry {
+    pub hash: String,
+    pub path: PathBuf,
+    pub size: u64,
+}
+
+#[derive(Serialize, Clone)]
+pub struct DirectoryEntry {
+    pub path: PathBuf,
+}
+
+#[derive(Serialize, Clone)]
 pub enum Entry {
-    File(PathBuf, String, u64),
-    Directory(PathBuf),
+    File(FileEntry),
+    Directory(DirectoryEntry),
 }
 
 ///
@@ -64,7 +78,11 @@ pub async fn scan_directory(directory: &Path, debug: bool) -> VecDeque<Entry> {
                 }
                 match calculate_checksum(&path) {
                     Ok(checksum) => {
-                        files.push_back(Entry::File(path.clone(), checksum, metadata.len()));
+                        files.push_back(Entry::File(FileEntry {
+                            path: path.clone(),
+                            hash: checksum,
+                            size: metadata.len(),
+                        }));
                     }
                     Err(err) => {
                         eprintln!("Failed to calculate checksum for {:?}: {}", path, err);
@@ -74,7 +92,7 @@ pub async fn scan_directory(directory: &Path, debug: bool) -> VecDeque<Entry> {
                 if debug {
                     println!("Directory: {:?}", path);
                 }
-                files.push_back(Entry::Directory(path.clone()));
+                files.push_back(Entry::Directory(DirectoryEntry { path: path.clone() }));
                 buf.push_back(path.clone());
             } else {
                 println!("Other: {:?}", path);

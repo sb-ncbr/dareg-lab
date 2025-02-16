@@ -1,13 +1,20 @@
-use crate::types::app::{AppData};
-use tauri::{Manager, Window};
-use crate::api_calls::get_upload_parameters::{get_upload_parameters};
-use crate::{State, Status};
+use crate::api_calls::get_upload_parameters::get_upload_parameters;
 use crate::functions::process_files::process_files_thread::process_files_thread;
 use crate::functions::scan_directory::scan_directory_thread::scan_directory_thread;
+use crate::types::app::AppData;
+use crate::{State, Status};
+use tauri::{Manager, Window};
 
 #[tauri::command]
-pub async fn start_upload(window: Window, directory: String, experiment_id: String) -> Result<(), ()> {
-    println!("[start_upload.start] Started uploading files from: {:?} for experiment id {:?}", directory, experiment_id);
+pub async fn start_upload(
+    window: Window,
+    directory: String,
+    experiment_id: String,
+) -> Result<(), ()> {
+    println!(
+        "[start_upload.start] Started uploading files from: {:?} for experiment id {:?}",
+        directory, experiment_id
+    );
 
     let experiment = experiment_id.as_str();
 
@@ -22,20 +29,28 @@ pub async fn start_upload(window: Window, directory: String, experiment_id: Stri
         return Err(());
     }
 
-    let upload_parameters = match get_upload_parameters(
-        experiment,
-        &config.dareg_url,
-        &config.token,
-    ).await {
-        Ok(x) => x,
-        Err(_) => todo!(),
-    };
+    let upload_parameters =
+        match get_upload_parameters(experiment, &config.dareg_url, &config.token).await {
+            Ok(x) => x,
+            Err(_) => todo!(),
+        };
 
-    let scan_task = tokio::spawn(scan_directory_thread(state.tasks.clone(), directory.clone(), window.clone()));
+    let scan_task = tokio::spawn(scan_directory_thread(
+        state.tasks.clone(),
+        directory.clone(),
+        window.clone(),
+    ));
     let mut scan_handle_guard = state.scan_handle.lock().await;
     *scan_handle_guard = Some(scan_task);
 
-    let upload_task = tokio::spawn(process_files_thread(upload_parameters, state.tasks.clone(), state.status.clone(), state.experiment_id.clone(), window.clone(), directory.clone()));
+    let upload_task = tokio::spawn(process_files_thread(
+        upload_parameters,
+        state.tasks.clone(),
+        state.status.clone(),
+        state.experiment_id.clone(),
+        window.clone(),
+        directory.clone(),
+    ));
     let mut upload_handle_guard = state.upload_handle.lock().await;
     *upload_handle_guard = Some(upload_task);
 

@@ -1,5 +1,5 @@
 use std::fs;
-use std::path::{Path};
+use std::path::Path;
 
 use sha2::{Digest, Sha256};
 use std::io::{self, Read};

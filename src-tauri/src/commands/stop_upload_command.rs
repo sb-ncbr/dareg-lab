@@ -1,6 +1,5 @@
-use tauri::{Manager, Window};
 use crate::{State, Status};
-
+use tauri::{Manager, Window};
 
 #[tauri::command]
 pub async fn stop_upload(window: Window) -> Result<(), ()> {

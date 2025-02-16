@@ -3,12 +3,12 @@ use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
 use std::io::{self};
 use std::path::Path;
 
-pub async fn create_file_at_path(
+pub async fn remove_entry_at_path(
     path: &Path,
     token: &String,
     provider_url: &String,
     space_id: &str,
-) -> Result<CreateFileResponse, Box<dyn std::error::Error>> {
+) -> Result<(), Box<dyn std::error::Error>> {
     // Set up the headers
     let mut headers = HeaderMap::new();
     headers.insert("X-Auth-Token", HeaderValue::try_from(format!("{}", token))?);
@@ -27,25 +27,20 @@ pub async fn create_file_at_path(
     );
 
     // Upload the chunk
-    let response = client.put(&url).headers(headers.clone()).send().await?;
+    let response = client.delete(&url).headers(headers.clone()).send().await?;
 
     if response.status().is_success() {
-        // Parse the JSON response
-        let response_text = response.text().await?;
-        let parsed_response: CreateFileResponse = serde_json::from_str(&response_text)?;
 
         println!(
-            "File {} created successfully with ID: {}",
+            "Entry {} removed successfully",
             path.file_name().unwrap().to_string_lossy(),
-            parsed_response.file_id
         );
-
-        Ok(parsed_response)
+        Ok(())
     } else {
         let response_text = response.text().await?;
         Err(Box::new(io::Error::new(
             io::ErrorKind::Other,
-            format!("Failed to create file: {}", response_text),
+            format!("Failed to create file {}", response_text),
         )))
     }
 }

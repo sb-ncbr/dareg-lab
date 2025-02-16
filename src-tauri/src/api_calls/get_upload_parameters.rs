@@ -1,7 +1,6 @@
-
+use crate::types::upload_parameters::UploadParameters;
 use reqwest::header::{HeaderMap, HeaderValue};
 use std::io::{self};
-use crate::types::upload_parameters::UploadParameters;
 
 /// Function to create temporary token for a dataset upload. Token is short-lived and constraint to experiment folder.
 ///
@@ -25,19 +24,17 @@ pub async fn get_upload_parameters(
 ) -> Result<UploadParameters, Box<dyn std::error::Error>> {
     // Set up the headers
     let mut headers = HeaderMap::new();
-    headers.insert("Authorization", HeaderValue::try_from(format!("Token {}", device_token))?);
+    headers.insert(
+        "Authorization",
+        HeaderValue::try_from(format!("Token {}", device_token))?,
+    );
 
     let client = reqwest::Client::new();
     // Define the endpoint URL
-    let url = format!(
-        "{dareg_url}/api/v1/temp-token/{experiment_id}/",
-    );
+    let url = format!("{dareg_url}/api/v1/temp-token/{experiment_id}/",);
 
     // Upload the chunk
-    let response = client
-        .post(&url)
-        .headers(headers.clone())
-        .send().await?;
+    let response = client.post(&url).headers(headers.clone()).send().await?;
 
     if response.status().is_success() {
         // Parse the JSON response
