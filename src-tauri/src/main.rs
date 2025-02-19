@@ -32,6 +32,9 @@ fn setup_handler(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error +
         experiment_id: Arc::new(Mutex::new(String::new())),
     });
 
+    let window = app.get_webview_window("main").unwrap();
+    window.open_devtools();
+
     // println!("{}", app_handle.path_resolver().resource_dir().unwrap_or(std::path::PathBuf::new()).to_string_lossy());
     // println!("{}", app_handle.path_resolver().app_config_dir().unwrap_or(std::path::PathBuf::new()).to_string_lossy());
     // println!("{}", app_handle.path_resolver().app_data_dir().unwrap_or(std::path::PathBuf::new()).to_string_lossy());
