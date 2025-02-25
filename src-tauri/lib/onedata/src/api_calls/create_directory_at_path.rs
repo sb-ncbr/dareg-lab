@@ -54,7 +54,7 @@ pub async fn create_directory_at_path(
         let response_text = response.text().await?;
         Err(Box::new(io::Error::new(
             io::ErrorKind::Other,
-            format!("Failed to create file"),
+            format!("Failed to create file {}", response_text),
         )))
     }
 }

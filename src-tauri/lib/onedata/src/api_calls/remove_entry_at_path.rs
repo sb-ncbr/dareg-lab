@@ -1,4 +1,3 @@
-use crate::types::files::CreateFileResponse;
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
 use std::io::{self};
 use std::path::Path;
