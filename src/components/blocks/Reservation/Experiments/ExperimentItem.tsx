@@ -3,7 +3,7 @@ import {twMerge} from "tailwind-merge";
 import {Button} from "@headlessui/react";
 import {XMarkIcon} from "@heroicons/react/24/solid";
 import Skeleton from "../../../primitives/skeleton/Skeleton.tsx";
-import {Experiment, StatusEnum} from "../../../../api.ts";
+import {Experiment, ExperimentStatusEnum} from "../../../../api.ts";
 import CircularLoader from "../../../primitives/loaders/CircularLoader.tsx";
 import {cva} from "class-variance-authority";
 import {ReactNode} from "react";
@@ -12,8 +12,10 @@ import {
     CheckIcon,
     ExclamationCircleIcon,
     ServerStackIcon,
-    SparklesIcon
+    SparklesIcon, TrashIcon
 } from "@heroicons/react/24/outline";
+import {useSetDialog} from "../../../../contexts/DialogContextProvider.tsx";
+import ConfirmDiscardExperimentDialog from "../../../dialog/ConfirmDiscardExperimentDialog.tsx";
 
 
 interface ExperimentProps {
@@ -24,20 +26,30 @@ interface ExperimentProps {
     deleting: boolean;
 }
 
-const resolvePillVariant = (state: StatusEnum): { pill: PillVariant, icon: ReactNode } => {
+const resolvePillVariant = (state: ExperimentStatusEnum): { pill: PillVariant, icon: ReactNode } => {
     switch (state) {
         case "running":
-            return {pill: "inverted", icon: <ArrowPathIcon className="h-6 w-6 text-inherit animate-spin" strokeWidth="2"/>}
+            return {
+                pill: "inverted",
+                icon: <ArrowPathIcon className="h-6 w-6 text-inherit animate-spin" strokeWidth="2"/>
+            }
         case "success":
             return {pill: "success", icon: <ServerStackIcon className="h-6 w-6 text-inherit" strokeWidth="2"/>}
         case "failure":
             return {pill: "error", icon: <ExclamationCircleIcon className="h-6 w-6 text-inherit" strokeWidth="2"/>}
+        case "discarded":
+            return {pill: "error", icon: <TrashIcon className="h-6 w-6 text-inherit" strokeWidth="2"/>}
         case "prepared":
             return {pill: "primary", icon: <CheckIcon className="h-6 w-6 text-inherit" strokeWidth="2"/>}
         case "new":
             return {pill: "primary", icon: <SparklesIcon className="h-6 w-6 text-inherit" strokeWidth="1.7"/>}
         case "synchronizing":
-            return {pill: "primary", icon: <ArrowPathIcon className="h-6 w-6 text-inherit animate-spin" strokeWidth="2"/>}
+            return {
+                pill: "primary",
+                icon: <ArrowPathIcon className="h-6 w-6 text-inherit animate-spin" strokeWidth="2"/>
+            }
+        case "deleted":
+            throw new Error("Experiment is deleted");
     }
 }
 
@@ -52,6 +64,8 @@ const ExperimentItemVariants = cva(
                 prepared: ["border-gray-300"],
                 new: ["border-gray-300"],
                 synchronizing: ["border-gray-300"],
+                discarded: ["border-gray-300"],
+                deleted: [], // should be not displayed
             },
             selected: {
                 true: ["border-2", "border-cyan-500"],
@@ -65,6 +79,7 @@ const ExperimentItemVariants = cva(
 const ExperimentItem = ({experiment, onDelete, onSelect, deleting, selected}: ExperimentProps) => {
     const {status} = experiment;
     const {pill, icon} = resolvePillVariant(status!);
+    const setDialog = useSetDialog();
     return (
         <div
             className={twMerge(ExperimentItemVariants({status, selected}))}
@@ -78,7 +93,10 @@ const ExperimentItem = ({experiment, onDelete, onSelect, deleting, selected}: Ex
             {experiment.name !== "" ? <span>{experiment.name}</span> : <Skeleton className="w-32 h-6"/>}
             <Button className="group-hover:opacity-100 opacity-0 size-6 text-red-600 ml-auto" onClick={e => {
                 e.stopPropagation();
-                onDelete()
+                setDialog(<ConfirmDiscardExperimentDialog experiment={experiment} onDiscard={() => {
+                    onDelete();
+                    setDialog(null);
+                }}/>);
             }}>
                 {deleting
                     ? <CircularLoader className="text-cyan-500"/>

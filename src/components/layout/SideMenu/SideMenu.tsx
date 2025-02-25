@@ -21,9 +21,10 @@ const SideMenu = () => {
                     <a href="/"><h1
                         className="subpixel-antialiased text-2xl font-bold leading-7 sm:truncate sm:text-2xl sm:tracking-tight">DAREG
                         Lab Client</h1></a>
-                    <Button onClick={() => setDialog(<InfoDialog/>)}><InformationCircleIcon className="w-6 h-6" strokeWidth="2" /></Button>
+                    <Button onClick={() => setDialog(<InfoDialog/>)}><InformationCircleIcon className="w-6 h-6"
+                                                                                            strokeWidth="2"/></Button>
                 </div>
-                {instrument ? <SideMenuSection title="Facility" items={[
+                <SideMenuSection title="Facility" items={instrument ? [
                     {title: "Name", item: instrument.facility?.name},
                     {
                         title: "Information for users",
@@ -34,8 +35,8 @@ const SideMenu = () => {
                         title: "Contact",
                         item: <a href={`mailto:${instrument.facility?.email}`}>{instrument.facility?.email}</a>
                     },
-                ]}/> : <div className="">Placeholder</div>}
-                {instrument ? <SideMenuSection title="Device" items={[
+                ] : []}/>
+                <SideMenuSection title="Device" items={instrument ? [
                     {title: "Device name", item: instrument.name},
                     {title: "Method", item: instrument.method},
                     {
@@ -43,7 +44,7 @@ const SideMenu = () => {
                         item: <a href={instrument.support}>{instrument.support}</a>
                     },
                     {title: "Contact", item: instrument.contact},
-                ]}/> : <div className="">Placeholder</div>}
+                ] : []}/>
             </div>
             <div className="w-full flex flex-col items-center">
                 <CurrentTime/>

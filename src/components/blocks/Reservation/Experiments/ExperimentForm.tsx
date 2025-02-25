@@ -6,8 +6,7 @@ import TextInput from "../../../primitives/form/TextInput.tsx";
 import TextAreaInput from "../../../primitives/form/TextAreaInput.tsx";
 import ExperimentData from "./ExperimentData.tsx";
 import {
-    Experiment, Instrument,
-    StatusEnum,
+    Experiment, ExperimentStatusEnum, Instrument,
     useApiV1ExperimentsPartialUpdate,
     useApiV1ExperimentsUpdate
 } from "../../../../api.ts";
@@ -118,7 +117,7 @@ const ExperimentForm = ({instrument, experiment, onUpdate}: ExperimentFormProps)
             id: experiment.id,
             data: {
                 ...experiment,
-                status: experiment.status === StatusEnum.new ? StatusEnum.prepared : experiment.status,
+                status: experiment.status === ExperimentStatusEnum.new ? ExperimentStatusEnum.prepared : experiment.status,
                 name: data.name,
                 note: data.note
             }
@@ -146,10 +145,10 @@ const ExperimentForm = ({instrument, experiment, onUpdate}: ExperimentFormProps)
                         <div className="flex flex-row gap-2">
                             <Button type="button" className="w-full" color="success" onClick={startExperiment}
                                     loading={isPartialUpdateExperimentPending}
-                                    disabled={experiment.status !== StatusEnum.prepared}>Start</Button>
+                                    disabled={experiment.status !== ExperimentStatusEnum.prepared}>Start</Button>
                             <Button type="button" className="w-full" color="error" onClick={endExperiment}
                                     loading={isPartialUpdateExperimentPending}
-                                    disabled={experiment.status !== StatusEnum.running}>End</Button>
+                                    disabled={experiment.status !== ExperimentStatusEnum.running}>End</Button>
                         </div>}
                 </div>
             </form>

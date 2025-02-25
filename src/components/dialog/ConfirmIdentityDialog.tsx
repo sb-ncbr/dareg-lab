@@ -4,16 +4,18 @@ import {useNavigate} from "react-router-dom";
 import TimeSpan from "../blocks/TimeSpan/TimeSpan.tsx";
 import User from "../blocks/User/User.tsx";
 import BaseDialog from "./BaseDialog.tsx";
-import { z } from "zod";
+import {z} from "zod";
 import {FormProvider, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {
+    apiV1DatasetsGetByReservationIdRetrieve,
+    apiV1ProjectsRetrieve,
     DatasetResponse,
-    Reservation,
+    Reservation, StatusF38Enum,
     useApiV1DatasetsCreate,
-    useApiV1DatasetsGetByReservationIdRetrieve
 } from "../../api.ts";
 import {toast} from "react-toastify";
+import Alert from "../primitives/alert/Alert.tsx";
 
 const schema = z.object({
     code: z.string(),
@@ -30,6 +32,8 @@ const ConfirmIdentityDialog = ({reservation}: { reservation: Reservation }) => {
             code: "",
         }
     })
+    const isPast = new Date() > new Date(reservation.to_date);
+    const isFuture = new Date() < new Date(reservation.from_date);
 
     const {
         mutate: createDataset,
@@ -47,32 +51,40 @@ const ConfirmIdentityDialog = ({reservation}: { reservation: Reservation }) => {
         }
     })
 
-    const {data: datasetData, isPending: isDatasetLoading} = useApiV1DatasetsGetByReservationIdRetrieve(reservation.id, {
-        query: {
-            retry: false
-        }
-    });
-    const dataset = datasetData?.data
-
-    const navigateToDataset = (dataset: DatasetResponse) => {
-        navigate(`/reservation/${dataset.id}`);
-        setDialog(null);
-    }
-
     const onConfirm = async () => {
-        if (dataset) {
-            return navigateToDataset(dataset);
+        const datasetResponse = await apiV1DatasetsGetByReservationIdRetrieve(reservation.id, {validateStatus: () => true});
+
+        const forbiddenStatuses: StatusF38Enum[] = [StatusF38Enum.finished, StatusF38Enum.discarded];
+        if (datasetResponse.status === 200 && forbiddenStatuses.includes(datasetResponse.data!.status!)) {
+            return toast("This reservation has already been completed", {type: "error"});
+        }
+        if (datasetResponse.status === 200) {
+            return navigateToDataset(datasetResponse.data);
+        }
+        if (datasetResponse.status !== 404) {
+            console.log(datasetResponse)
+            return toast("Failed to retrieve dataset", {type: "error"});
         }
 
+        const projectResponse = await apiV1ProjectsRetrieve(reservation.project_id, {validateStatus: () => true});
+        if (projectResponse.status !== 200) {
+            console.log(projectResponse);
+            return toast("Failed to retrieve project", {type: "error"});
+        }
         createDataset({
             data: {
                 name: reservation.name,
                 description: reservation.description,
-                project: "8c718e41-c460-491e-bcb5-44e6179c0874",
-                schema: "6947c715-22d4-4704-b652-f6817d89755e",
-                reservationId: reservation.id
+                project: reservation.project_id,
+                schema: projectResponse.data.default_dataset_schema.id,
+                reservationId: reservation.id,
             }
         })
+    }
+
+    const navigateToDataset = (dataset: DatasetResponse) => {
+        navigate(`/reservation/${dataset.reservationId}`);
+        setDialog(null);
     }
 
     return (
@@ -82,15 +94,17 @@ const ConfirmIdentityDialog = ({reservation}: { reservation: Reservation }) => {
                 <div>
                     <TimeSpan start={reservation.from_date} end={reservation.to_date} showDate/>
                     <User name={reservation.user}/>
-                    <div className="mt-4">
+                    <div className="my-2">
                         {reservation.description}
                     </div>
+                    {isPast && <Alert severity="warning">This reservation slot already ended!</Alert>}
+                    {isFuture && <Alert severity="warning">This reservation slot did not started yet!</Alert>}
                 </div>}
             buttons={
                 <FormProvider {...methods}>
                     <form onSubmit={methods.handleSubmit(onConfirm)}>
                         <div className="flex flex-row-reverse gap-4">
-                            <Button type="submit" loading={isDatasetCreating} disabled={isDatasetLoading}>
+                            <Button type="submit" loading={isDatasetCreating}>
                                 Confirm
                             </Button>
                             {/*<TextInput<CodeFormValues> fieldName="code" autoFocus/>*/}

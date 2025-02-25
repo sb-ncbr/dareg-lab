@@ -1,32 +1,38 @@
 import {twMerge} from "tailwind-merge";
 import {ReactNode} from "react";
+import {cva, VariantProps} from "class-variance-authority";
 
-export type PillVariant = "primary" | "inverted" | "secondary" | "error" | "success";
 
-interface PillProps {
-    title: ReactNode;
-    variant: PillVariant;
-    className?: string;
-}
-
-const resolveVariant = (variant: PillProps["variant"]) => {
-    switch (variant) {
-        case "primary":
-            return "bg-cyan-500 text-white";
-        case "inverted":
-            return "bg-white text-cyan-500";
-        case "secondary":
-            return "bg-cyan-300 text-black";
-        case "success":
-            return "bg-green-500 text-white";
-        case "error":
-            return "bg-red-500 text-white";
+const pillVariants = cva([
+    "rounded",
+], {
+    variants: {
+        variant: {
+            primary: "bg-cyan-500 text-white",
+            inverted: "bg-white text-cyan-500",
+            secondary: "bg-cyan-300 text-black",
+            success: "bg-green-500 text-white",
+            error: "bg-red-500 text-white",
+        },
+        size: {
+            small: "text-xs px-1 py-0.5",
+            medium: "text-sm px-2 py-1",
+            large: "text-lg"
+        }
+    },
+    defaultVariants: {
+        size: "medium"
     }
-}
+})
 
-const Pill = ({variant, title, className}: PillProps) => {
-    const classes = resolveVariant(variant);
-    return <div className={twMerge("rounded px-2 py-1", classes, className)}>{title}</div>
+interface PillProps extends VariantProps<typeof pillVariants> {
+    title: ReactNode;
+    className?: HTMLDivElement["className"];
+}
+export type PillVariant = PillProps["variant"];
+
+const Pill = ({variant, size, title, className}: PillProps) => {
+    return <div className={twMerge(pillVariants({variant, size, className}))}>{title}</div>
 }
 
 export default Pill;

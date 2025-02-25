@@ -2,7 +2,7 @@ import {cva, VariantProps} from "class-variance-authority";
 import {twMerge} from "tailwind-merge";
 
 const skeletonVariants = cva(
-    ["bg-gray-200", "animate-pulse", "rounded"],
+    ["bg-gray-200", "opacity-[.80]", "animate-pulse", "rounded-md"],
     {
         variants: {
             type: {

@@ -280,23 +280,17 @@ export interface User {
 
 /**
  * * `new` - NEW
-* `prepared` - PREPARED
-* `running` - RUNNING
-* `synchronizing` - SYNCHRONIZING
-* `success` - SUCCESS
-* `failure` - FAILURE
+* `discarded` - DISCARDED
+* `finished` - FINISHED
  */
-export type StatusEnum = typeof StatusEnum[keyof typeof StatusEnum];
+export type StatusF38Enum = typeof StatusF38Enum[keyof typeof StatusF38Enum];
 
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const StatusEnum = {
+export const StatusF38Enum = {
   new: 'new',
-  prepared: 'prepared',
-  running: 'running',
-  synchronizing: 'synchronizing',
-  success: 'success',
-  failure: 'failure',
+  discarded: 'discarded',
+  finished: 'finished',
 } as const;
 
 export interface Schema {
@@ -330,6 +324,26 @@ export interface Reservation {
   to_date: string;
   user: string;
   description: string;
+  project_id: string;
+}
+
+export interface ProjectResponse {
+  id: string;
+  name: string;
+  readonly created_by: UserSerializerMinimal;
+  readonly perms: string;
+  readonly shares: string;
+  readonly facility: FacilitySerializerMinimal;
+  readonly default_dataset_schema: BaseModel;
+  readonly project_schema: BaseModel;
+  readonly created: string;
+  readonly modified: string;
+  /** @maxLength 500 */
+  description: string;
+  /** @maxLength 200 */
+  onedata_space_id?: string;
+  /** @nullable */
+  modified_by?: number | null;
 }
 
 export interface Project {
@@ -505,7 +519,7 @@ export interface PatchedExperiment {
   end_time?: string | null;
   /** @maxLength 500 */
   note?: string;
-  status?: StatusEnum;
+  status?: ExperimentStatusEnum;
   /**
    * @maxLength 512
    * @nullable
@@ -552,6 +566,7 @@ export interface PatchedDataset {
    * @nullable
    */
   reservationId?: string | null;
+  status?: StatusF38Enum;
   /** @nullable */
   readonly created_by?: number | null;
   /** @nullable */
@@ -580,13 +595,13 @@ export interface PaginatedSchemaList {
   results?: Schema[];
 }
 
-export interface PaginatedProjectList {
+export interface PaginatedProjectResponseList {
   count?: number;
   /** @nullable */
   next?: string | null;
   /** @nullable */
   previous?: string | null;
-  results?: Project[];
+  results?: ProjectResponse[];
 }
 
 export interface PaginatedProfileList {
@@ -703,6 +718,31 @@ export interface Facility {
   readonly modified_by: number | null;
 }
 
+/**
+ * * `new` - NEW
+* `prepared` - PREPARED
+* `running` - RUNNING
+* `synchronizing` - SYNCHRONIZING
+* `success` - SUCCESS
+* `failure` - FAILURE
+* `discarded` - DISCARDED
+* `deleted` - DELETED
+ */
+export type ExperimentStatusEnum = typeof ExperimentStatusEnum[keyof typeof ExperimentStatusEnum];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ExperimentStatusEnum = {
+  new: 'new',
+  prepared: 'prepared',
+  running: 'running',
+  synchronizing: 'synchronizing',
+  success: 'success',
+  failure: 'failure',
+  discarded: 'discarded',
+  deleted: 'deleted',
+} as const;
+
 export interface Experiment {
   readonly id: string;
   readonly created: string;
@@ -715,7 +755,7 @@ export interface Experiment {
   end_time?: string | null;
   /** @maxLength 500 */
   note?: string;
-  status?: StatusEnum;
+  status?: ExperimentStatusEnum;
   /**
    * @maxLength 512
    * @nullable
@@ -814,6 +854,7 @@ export interface DatasetResponse {
    * @nullable
    */
   reservationId?: string | null;
+  status?: StatusF38Enum;
   /** @nullable */
   schema?: string | null;
   tags?: string[];
@@ -853,6 +894,7 @@ export interface Dataset {
    * @nullable
    */
   reservationId?: string | null;
+  status?: StatusF38Enum;
   /** @nullable */
   readonly created_by: number | null;
   /** @nullable */
@@ -961,6 +1003,172 @@ export function useApiSchemaRetrieve<TData = Awaited<ReturnType<typeof apiSchema
 
 
 
+export const apiTokenLoginCreate = (
+     options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<void>> => {
+    
+    
+    return axios.default.post(
+      `/api/token/login/`,undefined,options
+    );
+  }
+
+
+
+export const getApiTokenLoginCreateMutationOptions = <TData = Awaited<ReturnType<typeof apiTokenLoginCreate>>, TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,void, TContext>, axios?: AxiosRequestConfig}
+) => {
+const mutationKey = ['apiTokenLoginCreate'];
+const {mutation: mutationOptions, axios: axiosOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, axios: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof apiTokenLoginCreate>>, void> = () => {
+          
+
+          return  apiTokenLoginCreate(axiosOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions } as UseMutationOptions<TData, TError,void, TContext>}
+
+    export type ApiTokenLoginCreateMutationResult = NonNullable<Awaited<ReturnType<typeof apiTokenLoginCreate>>>
+    
+    export type ApiTokenLoginCreateMutationError = AxiosError<unknown>
+
+    export const useApiTokenLoginCreate = <TData = Awaited<ReturnType<typeof apiTokenLoginCreate>>, TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,void, TContext>, axios?: AxiosRequestConfig}
+): UseMutationResult<
+        TData,
+        TError,
+        void,
+        TContext
+      > => {
+
+      const mutationOptions = getApiTokenLoginCreateMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+export const apiTokenLogoutCreate = (
+     options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<void>> => {
+    
+    
+    return axios.default.post(
+      `/api/token/logout/`,undefined,options
+    );
+  }
+
+
+
+export const getApiTokenLogoutCreateMutationOptions = <TData = Awaited<ReturnType<typeof apiTokenLogoutCreate>>, TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,void, TContext>, axios?: AxiosRequestConfig}
+) => {
+const mutationKey = ['apiTokenLogoutCreate'];
+const {mutation: mutationOptions, axios: axiosOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, axios: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof apiTokenLogoutCreate>>, void> = () => {
+          
+
+          return  apiTokenLogoutCreate(axiosOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions } as UseMutationOptions<TData, TError,void, TContext>}
+
+    export type ApiTokenLogoutCreateMutationResult = NonNullable<Awaited<ReturnType<typeof apiTokenLogoutCreate>>>
+    
+    export type ApiTokenLogoutCreateMutationError = AxiosError<unknown>
+
+    export const useApiTokenLogoutCreate = <TData = Awaited<ReturnType<typeof apiTokenLogoutCreate>>, TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,void, TContext>, axios?: AxiosRequestConfig}
+): UseMutationResult<
+        TData,
+        TError,
+        void,
+        TContext
+      > => {
+
+      const mutationOptions = getApiTokenLogoutCreateMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * Log the user out of all sessions
+I.E. deletes all auth tokens for the user
+ */
+export const apiTokenLogoutallCreate = (
+     options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<void>> => {
+    
+    
+    return axios.default.post(
+      `/api/token/logoutall/`,undefined,options
+    );
+  }
+
+
+
+export const getApiTokenLogoutallCreateMutationOptions = <TData = Awaited<ReturnType<typeof apiTokenLogoutallCreate>>, TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,void, TContext>, axios?: AxiosRequestConfig}
+) => {
+const mutationKey = ['apiTokenLogoutallCreate'];
+const {mutation: mutationOptions, axios: axiosOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, axios: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof apiTokenLogoutallCreate>>, void> = () => {
+          
+
+          return  apiTokenLogoutallCreate(axiosOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions } as UseMutationOptions<TData, TError,void, TContext>}
+
+    export type ApiTokenLogoutallCreateMutationResult = NonNullable<Awaited<ReturnType<typeof apiTokenLogoutallCreate>>>
+    
+    export type ApiTokenLogoutallCreateMutationError = AxiosError<unknown>
+
+    export const useApiTokenLogoutallCreate = <TData = Awaited<ReturnType<typeof apiTokenLogoutallCreate>>, TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,void, TContext>, axios?: AxiosRequestConfig}
+): UseMutationResult<
+        TData,
+        TError,
+        void,
+        TContext
+      > => {
+
+      const mutationOptions = getApiTokenLogoutallCreateMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
 /**
  * API endpoint that allows dataset to be viewed or edited.
  */
@@ -1615,6 +1823,64 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       > => {
 
       const mutationOptions = getApiV1DatasetsCreatePublicShareCreateMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * API endpoint that allows dataset to be viewed or edited.
+ */
+export const apiV1DatasetsShadowCreate = (
+    dataset: NonReadonly<Dataset>, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<DatasetResponse>> => {
+    
+    
+    return axios.default.post(
+      `/api/v1/datasets/shadow/`,
+      dataset,options
+    );
+  }
+
+
+
+export const getApiV1DatasetsShadowCreateMutationOptions = <TData = Awaited<ReturnType<typeof apiV1DatasetsShadowCreate>>, TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: NonReadonly<Dataset>}, TContext>, axios?: AxiosRequestConfig}
+) => {
+const mutationKey = ['apiV1DatasetsShadowCreate'];
+const {mutation: mutationOptions, axios: axiosOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, axios: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof apiV1DatasetsShadowCreate>>, {data: NonReadonly<Dataset>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  apiV1DatasetsShadowCreate(data,axiosOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions } as UseMutationOptions<TData, TError,{data: NonReadonly<Dataset>}, TContext>}
+
+    export type ApiV1DatasetsShadowCreateMutationResult = NonNullable<Awaited<ReturnType<typeof apiV1DatasetsShadowCreate>>>
+    export type ApiV1DatasetsShadowCreateMutationBody = NonReadonly<Dataset>
+    export type ApiV1DatasetsShadowCreateMutationError = AxiosError<unknown>
+
+    export const useApiV1DatasetsShadowCreate = <TData = Awaited<ReturnType<typeof apiV1DatasetsShadowCreate>>, TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: NonReadonly<Dataset>}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationResult<
+        TData,
+        TError,
+        {data: NonReadonly<Dataset>},
+        TContext
+      > => {
+
+      const mutationOptions = getApiV1DatasetsShadowCreateMutationOptions(options);
 
       return useMutation(mutationOptions);
     }
@@ -3673,7 +3939,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  */
 export const apiV1ProjectsList = (
     params?: ApiV1ProjectsListParams, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<PaginatedProjectList>> => {
+ ): Promise<AxiosResponse<PaginatedProjectResponseList>> => {
     
     
     return axios.default.get(
@@ -3758,7 +4024,7 @@ export function useApiV1ProjectsList<TData = Awaited<ReturnType<typeof apiV1Proj
  */
 export const apiV1ProjectsCreate = (
     project: NonReadonly<Project>, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Project>> => {
+ ): Promise<AxiosResponse<ProjectResponse>> => {
     
     
     return axios.default.post(
@@ -3816,7 +4082,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  */
 export const apiV1ProjectsRetrieve = (
     id: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Project>> => {
+ ): Promise<AxiosResponse<ProjectResponse>> => {
     
     
     return axios.default.get(
@@ -3900,7 +4166,7 @@ export function useApiV1ProjectsRetrieve<TData = Awaited<ReturnType<typeof apiV1
 export const apiV1ProjectsUpdate = (
     id: string,
     project: NonReadonly<Project>, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Project>> => {
+ ): Promise<AxiosResponse<ProjectResponse>> => {
     
     
     return axios.default.put(
@@ -3959,7 +4225,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 export const apiV1ProjectsPartialUpdate = (
     id: string,
     patchedProject: NonReadonly<PatchedProject>, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Project>> => {
+ ): Promise<AxiosResponse<ProjectResponse>> => {
     
     
     return axios.default.patch(
@@ -4140,6 +4406,86 @@ export function useApiV1ReservationRetrieve<TData = Awaited<ReturnType<typeof ap
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getApiV1ReservationRetrieveQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+export const apiV1ReservationRetrieve2 = (
+    id: string, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<Reservation>> => {
+    
+    
+    return axios.default.get(
+      `/api/v1/reservation/${id}/`,options
+    );
+  }
+
+
+export const getApiV1ReservationRetrieve2QueryKey = (id: string,) => {
+    return [`/api/v1/reservation/${id}/`] as const;
+    }
+
+    
+export const getApiV1ReservationRetrieve2QueryOptions = <TData = Awaited<ReturnType<typeof apiV1ReservationRetrieve2>>, TError = AxiosError<void>>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiV1ReservationRetrieve2>>, TError, TData>>, axios?: AxiosRequestConfig}
+) => {
+
+const {query: queryOptions, axios: axiosOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getApiV1ReservationRetrieve2QueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof apiV1ReservationRetrieve2>>> = ({ signal }) => apiV1ReservationRetrieve2(id, { signal, ...axiosOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof apiV1ReservationRetrieve2>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ApiV1ReservationRetrieve2QueryResult = NonNullable<Awaited<ReturnType<typeof apiV1ReservationRetrieve2>>>
+export type ApiV1ReservationRetrieve2QueryError = AxiosError<void>
+
+
+export function useApiV1ReservationRetrieve2<TData = Awaited<ReturnType<typeof apiV1ReservationRetrieve2>>, TError = AxiosError<void>>(
+ id: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiV1ReservationRetrieve2>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof apiV1ReservationRetrieve2>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, axios?: AxiosRequestConfig}
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useApiV1ReservationRetrieve2<TData = Awaited<ReturnType<typeof apiV1ReservationRetrieve2>>, TError = AxiosError<void>>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiV1ReservationRetrieve2>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof apiV1ReservationRetrieve2>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, axios?: AxiosRequestConfig}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useApiV1ReservationRetrieve2<TData = Awaited<ReturnType<typeof apiV1ReservationRetrieve2>>, TError = AxiosError<void>>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiV1ReservationRetrieve2>>, TError, TData>>, axios?: AxiosRequestConfig}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useApiV1ReservationRetrieve2<TData = Awaited<ReturnType<typeof apiV1ReservationRetrieve2>>, TError = AxiosError<void>>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof apiV1ReservationRetrieve2>>, TError, TData>>, axios?: AxiosRequestConfig}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getApiV1ReservationRetrieve2QueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

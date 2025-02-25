@@ -2,39 +2,43 @@ import {useSetDialog} from "../../contexts/DialogContextProvider.tsx";
 import Button from "../primitives/buttons/Button.tsx";
 import {useNavigate} from "react-router-dom";
 import BaseDialog from "./BaseDialog.tsx";
-import {DatasetResponse} from "../../api.ts";
+import {
+    DatasetResponse, Reservation, StatusF38Enum,
+    useApiV1DatasetsPartialUpdate,
+} from "../../api.ts";
+import Alert from "../primitives/alert/Alert.tsx";
+import User from "../blocks/User/User.tsx";
+import TimeSpan from "../blocks/TimeSpan/TimeSpan.tsx";
 
-const ConfirmEndExperimentDialog = ({dataset}: { dataset: DatasetResponse }) => {
+const ConfirmEndExperimentDialog = ({dataset, reservation}: { dataset: DatasetResponse, reservation: Reservation }) => {
     const setDialog = useSetDialog();
     const navigate = useNavigate();
 
-    const onConfirm = () => {
-        setDialog(null);
-        navigate("/agenda");
-    }
+    const {
+        mutate: partialUpdateDataset,
+        isPending: isPartialUpdateDatasetPending,
+    } = useApiV1DatasetsPartialUpdate({
+        mutation: {
+            onSuccess: () => {
+                setDialog(null);
+                navigate("/agenda");
+            }
+        }
+    })
 
     return (
         <BaseDialog
             title={`End ${dataset.name}?`}
             content={
                 <div>
-                    {/*<TimeSpan start={reservation.start} end={reservation.end}/>*/}
-                    {/*<User name={reservation.user}/>*/}
-                    <div className="mt-4">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mollis felis urna, a luctus ex
-                        egestas
-                        mollis. Mauris at purus tempus risus interdum euismod. Sed mauris turpis, molestie ut tristique
-                        sed,
-                        aliquet pulvinar est. Sed mauris lectus, imperdiet ut commodo vel, mattis in ex. Suspendisse
-                        eget
-                        purus
-                        sed nulla lacinia fringilla. Ut vestibulum odio nulla, in euismod sem tincidunt rutrum. Nunc
-                        iaculis
-                        risus at urna mollis, non vehicula risus sagittis.
-                    </div>
+                    <TimeSpan start={reservation.from_date} end={reservation.to_date} showDate/>
+                    <User name={reservation.user}/>
+                    <Alert severity="info" className="mt-4">
+                        Are you sure you want to end the reservation? The reservation will not be accessible again.
+                    </Alert>
                 </div>}
             buttons={
-                <Button type="button" onClick={onConfirm}>
+                <Button type="button" onClick={() => partialUpdateDataset({id: dataset.id, data: {status: StatusF38Enum.finished}})} loading={isPartialUpdateDatasetPending}>
                     Confirm
                 </Button>
             }/>
