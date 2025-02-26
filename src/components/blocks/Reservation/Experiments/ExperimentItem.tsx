@@ -48,8 +48,6 @@ const resolvePillVariant = (state: ExperimentStatusEnum): { pill: PillVariant, i
                 pill: "primary",
                 icon: <ArrowPathIcon className="h-6 w-6 text-inherit animate-spin" strokeWidth="2"/>
             }
-        case "deleted":
-            throw new Error("Experiment is deleted");
     }
 }
 
