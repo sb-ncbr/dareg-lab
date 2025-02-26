@@ -3,18 +3,11 @@ import {HOUR_WIDTH} from "./AgendaHour.tsx";
 import {twMerge} from "tailwind-merge";
 import {useSetDialog} from "../../../contexts/DialogContextProvider.tsx";
 import ConfirmIdentityDialog from "../../dialog/ConfirmIdentityDialog.tsx";
-import {Reservation} from "../../../api.ts";
+import {Reservation, Status464Enum} from "../../../api.ts";
 import User from "../User/User.tsx";
 import TimeSpan from "../TimeSpan/TimeSpan.tsx";
 import {cva} from "class-variance-authority";
-
-export interface Event {
-    id: string;
-    title: string;
-    start: Date;
-    end: Date;
-    user: string;
-}
+import Pill from "../../primitives/Pills/Pill.tsx";
 
 const agendaEventVariants = cva([
     "rounded-lg", "text-white", "p-6", "cursor-pointer", "bg-cyan-500"
@@ -30,6 +23,17 @@ const agendaEventVariants = cva([
         }
     }
 })
+
+const resolveLabel = (status: string | null) => {
+    switch (status) {
+        case Status464Enum.finished:
+            return "Saved Dataset";
+        case Status464Enum.new:
+            return "Dataset";
+        case null:
+            return "No Dataset"
+    }
+}
 
 const AgendaEvent = ({ event, agendaFrom }: { event: Reservation, agendaFrom: Date }) => {
     const eventStart = new Date(event.from_date);
@@ -53,7 +57,10 @@ const AgendaEvent = ({ event, agendaFrom }: { event: Reservation, agendaFrom: Da
             className={twMerge(agendaEventVariants({isNow, isPast }))}
             onClick={()=> setDialog(<ConfirmIdentityDialog reservation={event}/>)}
         >
-            <h3 className="subpixel-antialiased text-lg font-bold leading-7 sm:truncate sm:text-xl">{event.name}</h3>
+            <div className="flex flex-row items-center gap-2">
+                <Pill title={resolveLabel(event.dataset_status)} variant="inverted" size="small"/>
+                <h3 className="subpixel-antialiased text-lg font-bold leading-7 sm:truncate sm:text-xl">{event.name}</h3>
+            </div>
             <User name={event.user}/>
             <TimeSpan start={eventStart} end={eventEnd} />
         </div>

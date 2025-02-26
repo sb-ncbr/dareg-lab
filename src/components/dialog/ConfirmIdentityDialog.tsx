@@ -11,7 +11,7 @@ import {
     apiV1DatasetsGetByReservationIdRetrieve,
     apiV1ProjectsRetrieve,
     DatasetResponse,
-    Reservation, StatusF38Enum,
+    Reservation, Status464Enum,
     useApiV1DatasetsCreate,
 } from "../../api.ts";
 import {toast} from "react-toastify";
@@ -34,6 +34,7 @@ const ConfirmIdentityDialog = ({reservation}: { reservation: Reservation }) => {
     })
     const isPast = new Date() > new Date(reservation.to_date);
     const isFuture = new Date() < new Date(reservation.from_date);
+    const isFinished = reservation.dataset_status == Status464Enum.finished;
 
     const {
         mutate: createDataset,
@@ -54,9 +55,9 @@ const ConfirmIdentityDialog = ({reservation}: { reservation: Reservation }) => {
     const onConfirm = async () => {
         const datasetResponse = await apiV1DatasetsGetByReservationIdRetrieve(reservation.id, {validateStatus: () => true});
 
-        const forbiddenStatuses: StatusF38Enum[] = [StatusF38Enum.finished, StatusF38Enum.discarded];
+        const forbiddenStatuses: Status464Enum[] = [Status464Enum.finished];
         if (datasetResponse.status === 200 && forbiddenStatuses.includes(datasetResponse.data!.status!)) {
-            return toast("This reservation has already been completed", {type: "error"});
+            return toast("This reservation has already been finished", {type: "error"});
         }
         if (datasetResponse.status === 200) {
             return navigateToDataset(datasetResponse.data);
@@ -97,8 +98,9 @@ const ConfirmIdentityDialog = ({reservation}: { reservation: Reservation }) => {
                     <div className="my-2">
                         {reservation.description}
                     </div>
-                    {isPast && <Alert severity="warning">This reservation slot already ended!</Alert>}
-                    {isFuture && <Alert severity="warning">This reservation slot did not started yet!</Alert>}
+                    {isFinished && <Alert severity="info">This reservation has already been finished!</Alert>}
+                    {!isFinished && isPast && <Alert severity="warning">This reservation slot already ended!</Alert>}
+                    {!isFinished && isFuture && <Alert severity="warning">This reservation slot did not started yet!</Alert>}
                 </div>}
             buttons={
                 <FormProvider {...methods}>

@@ -3,7 +3,7 @@ import Button from "../primitives/buttons/Button.tsx";
 import {useNavigate} from "react-router-dom";
 import BaseDialog from "./BaseDialog.tsx";
 import {
-    DatasetResponse, Reservation, StatusF38Enum,
+    DatasetResponse, Status464Enum, Reservation,
     useApiV1DatasetsPartialUpdate,
 } from "../../api.ts";
 import Alert from "../primitives/alert/Alert.tsx";
@@ -38,7 +38,7 @@ const ConfirmEndExperimentDialog = ({dataset, reservation}: { dataset: DatasetRe
                     </Alert>
                 </div>}
             buttons={
-                <Button type="button" onClick={() => partialUpdateDataset({id: dataset.id, data: {status: StatusF38Enum.finished}})} loading={isPartialUpdateDatasetPending}>
+                <Button type="button" onClick={() => partialUpdateDataset({id: dataset.id, data: {status: Status464Enum.finished}})} loading={isPartialUpdateDatasetPending}>
                     Confirm
                 </Button>
             }/>

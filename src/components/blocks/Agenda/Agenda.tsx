@@ -44,7 +44,7 @@ const Agenda = () => {
         <div className="rounded-lg border border-gray-300 p-6 h-full overflow-y-scroll relative" ref={scrollContainerRef}>
                 <CurrentHour agendaFrom={agendaFrom} time={time}/>
                 {hours.map((hour, idx) => <AgendaHour currentTime={time} time={hour} height={hourHeight} key={idx}/>)}
-                {reservations.map((event, idx) => <AgendaEvent event={event} agendaFrom={agendaFrom} key={idx}/>)}
+                {Array.isArray(reservations) && reservations.map((event, idx) => <AgendaEvent event={event} agendaFrom={agendaFrom} key={idx}/>)}
         </div>
     )
 }

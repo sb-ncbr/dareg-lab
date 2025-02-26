@@ -22,6 +22,12 @@ const useReservations = () => {
     const {data} = useApiV1ReservationRetrieve({
         date_from: from.toISOString(),
         date_to: to.toISOString(),
+    }, {
+        query: {
+            refetchOnMount: "always",
+            refetchOnWindowFocus: "always",
+            refetchOnReconnect: "always"
+        }
     })
 
     useEffect(() => {
@@ -32,7 +38,7 @@ const useReservations = () => {
         return () => clearInterval(interval);
     }, []);
 
-    return data?.data || [];
+    return data?.data ?? [];
 }
 
 export default useReservations;

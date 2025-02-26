@@ -280,16 +280,14 @@ export interface User {
 
 /**
  * * `new` - NEW
-* `discarded` - DISCARDED
 * `finished` - FINISHED
  */
-export type StatusF38Enum = typeof StatusF38Enum[keyof typeof StatusF38Enum];
+export type Status464Enum = typeof Status464Enum[keyof typeof Status464Enum];
 
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const StatusF38Enum = {
+export const Status464Enum = {
   new: 'new',
-  discarded: 'discarded',
   finished: 'finished',
 } as const;
 
@@ -325,6 +323,8 @@ export interface Reservation {
   user: string;
   description: string;
   project_id: string;
+  /** @nullable */
+  readonly dataset_status: string | null;
 }
 
 export interface ProjectResponse {
@@ -566,7 +566,7 @@ export interface PatchedDataset {
    * @nullable
    */
   reservationId?: string | null;
-  status?: StatusF38Enum;
+  status?: Status464Enum;
   /** @nullable */
   readonly created_by?: number | null;
   /** @nullable */
@@ -726,7 +726,6 @@ export interface Facility {
 * `success` - SUCCESS
 * `failure` - FAILURE
 * `discarded` - DISCARDED
-* `deleted` - DELETED
  */
 export type ExperimentStatusEnum = typeof ExperimentStatusEnum[keyof typeof ExperimentStatusEnum];
 
@@ -740,7 +739,6 @@ export const ExperimentStatusEnum = {
   success: 'success',
   failure: 'failure',
   discarded: 'discarded',
-  deleted: 'deleted',
 } as const;
 
 export interface Experiment {
@@ -854,7 +852,7 @@ export interface DatasetResponse {
    * @nullable
    */
   reservationId?: string | null;
-  status?: StatusF38Enum;
+  status?: Status464Enum;
   /** @nullable */
   schema?: string | null;
   tags?: string[];
@@ -894,7 +892,7 @@ export interface Dataset {
    * @nullable
    */
   reservationId?: string | null;
-  status?: StatusF38Enum;
+  status?: Status464Enum;
   /** @nullable */
   readonly created_by: number | null;
   /** @nullable */
