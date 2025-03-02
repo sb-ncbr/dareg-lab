@@ -29,7 +29,7 @@ const resolveLabel = (status: string | null) => {
         case Status464Enum.finished:
             return "Saved Dataset";
         case Status464Enum.new:
-            return "Dataset";
+            return "Open Dataset";
         case null:
             return "No Dataset"
     }
