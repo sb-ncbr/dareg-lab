@@ -9,7 +9,8 @@ use tauri::Window;
 use tokio::sync::Mutex;
 use tokio::time::sleep;
 use std::time::Instant;
-use crate::functions::process_files::direcory_processors::{handle_create_directory, handle_delete_directory};
+use log::{error, info};
+use crate::functions::process_files::directory_processors::{handle_create_directory, handle_delete_directory};
 use crate::functions::process_files::file_processors::{handle_create_file, handle_delete_file, handle_modify_file};
 
 const FILE_UPLOAD_CONFIRMATION_EVENT_NAME: &str = "files-upload-confirmation";
@@ -53,7 +54,7 @@ pub async fn process_files_thread(
     upload_task_window: Window,
     upload_task_directory: String,
 ) {
-    println!("[tasks_processing.start]: Started uploading files.");
+    info!("[tasks_processing.start]: Started uploading files.");
 
     let mut file_id_map: HashMap<PathBuf, String> = HashMap::new();
 
@@ -82,7 +83,7 @@ pub async fn process_files_thread(
         drop(upload_status_guard);
 
         let before = Instant::now();
-        println!("[task_processing.start]: \n{:?}", &task);
+        info!("[task_processing.start]: \n{:?}", &task);
         match task {
             Task::CreateFile(path) => {
                 handle_create_file(&upload_parameters, &upload_task_window, &upload_task_directory, &mut file_id_map, path).await;
@@ -100,11 +101,11 @@ pub async fn process_files_thread(
                 handle_delete_directory(&upload_parameters, &upload_task_directory, path).await;
             }
             _ => {
-                println!("[task_processing.error]: Task not supported: {:?}", &task);
+                error!("[task_processing.error]: Task not supported: {:?}", &task);
             }
         }
         let elapsed = before.elapsed();
-        println!("[task_processing.stop] elapsed: {}", elapsed.as_secs_f64());
+        info!("[task_processing.stop] elapsed: {}", elapsed.as_secs_f64());
     }
 
     let upload_experiment_id_guard = upload_task_experiment_id_arc.lock().await;
@@ -114,5 +115,5 @@ pub async fn process_files_thread(
             upload_experiment_id_guard.clone(),
         )
         .unwrap();
-    println!("[tasks_processing.finished]: Finished uploading files.");
+    info!("[tasks_processing.finished]: Finished uploading files.");
 }

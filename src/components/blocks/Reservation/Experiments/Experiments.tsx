@@ -98,29 +98,29 @@ const Experiments = ({dataset}: ExperimentsProps) => {
 
     return (
         <ExperimentsContainer>
-            <div className="rounded-l-lg border border-r-0 border-gray-300 p-6 flex flex-col gap-2 w-80">
-                {experiments.map((experiment, idx) => (
-                    <ExperimentItem
-                        key={idx}
-                        experiment={experiment}
-                        onDelete={() => handleDelete(experiment)}
-                        onSelect={() => handleSelectExperiment(experiment)}
-                        selected={selectedExperimentId === experiment.id}
-                        deleting={deletingExperimentId === experiment.id}
-                    />
-                ))}
-                <div className="mt-auto">
-                    <Button
-                        color="secondary"
-                        className="w-full"
-                        onClick={handleAddExperiment}
-                        loading={isCreateExperimentPending}
-                    >
-                        Add experiment
-                    </Button>
+            <div className="rounded-l-lg border border-r-0 border-gray-300 p-4 flex flex-col gap-2 w-80">
+                <div className="flex flex-col gap-2 flex-1 min-h-0 overflow-y-auto">
+                    {experiments.map((experiment, idx) => (
+                        <ExperimentItem
+                            key={idx}
+                            experiment={experiment}
+                            onDelete={() => handleDelete(experiment)}
+                            onSelect={() => handleSelectExperiment(experiment)}
+                            selected={selectedExperimentId === experiment.id}
+                            deleting={deletingExperimentId === experiment.id}
+                        />
+                    ))}
                 </div>
+                <Button
+                    color="secondary"
+                    className="w-full"
+                    onClick={handleAddExperiment}
+                    loading={isCreateExperimentPending}
+                >
+                    Add experiment
+                </Button>
             </div>
-            <div className="rounded-r-lg border border-gray-300 p-6 flex-1">
+            <div className="rounded-r-lg border border-gray-300 p-4 flex-1">
                 {selectedExperimentId !== null && !!instrument && (
                     <ExperimentForm
                         experiment={experiments.find((experiment) => experiment.id === selectedExperimentId)!}

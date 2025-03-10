@@ -31,7 +31,6 @@ pub enum Entry {
 /// # Arguments
 ///
 /// * `directory`:
-/// * `debug`:
 ///
 /// returns: VecDeque<Entry, Global>
 ///
@@ -40,7 +39,7 @@ pub enum Entry {
 /// ```
 ///
 /// ```
-pub async fn scan_directory(directory: &Path, debug: bool) -> VecDeque<Entry> {
+pub async fn scan_directory(directory: &Path) -> VecDeque<Entry> {
     let mut files = VecDeque::new();
     let mut buf = VecDeque::new();
     buf.push_back(directory.to_path_buf());
@@ -73,9 +72,6 @@ pub async fn scan_directory(directory: &Path, debug: bool) -> VecDeque<Entry> {
             };
 
             if metadata.is_file() {
-                if debug {
-                    println!("File: {:?}", path);
-                }
                 match calculate_checksum(&path) {
                     Ok(checksum) => {
                         files.push_back(Entry::File(FileEntry {
@@ -89,9 +85,6 @@ pub async fn scan_directory(directory: &Path, debug: bool) -> VecDeque<Entry> {
                     }
                 }
             } else if metadata.is_dir() {
-                if debug {
-                    println!("Directory: {:?}", path);
-                }
                 files.push_back(Entry::Directory(DirectoryEntry { path: path.clone() }));
                 buf.push_back(path.clone());
             } else {

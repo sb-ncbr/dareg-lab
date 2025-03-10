@@ -31,22 +31,22 @@ const resolvePillVariant = (state: ExperimentStatusEnum): { pill: PillVariant, i
         case "running":
             return {
                 pill: "inverted",
-                icon: <ArrowPathIcon className="h-6 w-6 text-inherit animate-spin" strokeWidth="2"/>
+                icon: <ArrowPathIcon className="h-4 w-4 text-inherit animate-spin" strokeWidth="2"/>
             }
         case "success":
-            return {pill: "success", icon: <ServerStackIcon className="h-6 w-6 text-inherit" strokeWidth="2"/>}
+            return {pill: "success", icon: <ServerStackIcon className="h-4 w-4 text-inherit" strokeWidth="2"/>}
         case "failure":
-            return {pill: "error", icon: <ExclamationCircleIcon className="h-6 w-6 text-inherit" strokeWidth="2"/>}
+            return {pill: "error", icon: <ExclamationCircleIcon className="h-4 w-4 text-inherit" strokeWidth="2"/>}
         case "discarded":
-            return {pill: "error", icon: <TrashIcon className="h-6 w-6 text-inherit" strokeWidth="2"/>}
+            return {pill: "error", icon: <TrashIcon className="h-4 w-4 text-inherit" strokeWidth="2"/>}
         case "prepared":
-            return {pill: "primary", icon: <CheckIcon className="h-6 w-6 text-inherit" strokeWidth="2"/>}
+            return {pill: "primary", icon: <CheckIcon className="h-4 w-4 text-inherit" strokeWidth="2"/>}
         case "new":
-            return {pill: "primary", icon: <SparklesIcon className="h-6 w-6 text-inherit" strokeWidth="1.7"/>}
+            return {pill: "primary", icon: <SparklesIcon className="h-4 w-4 text-inherit" strokeWidth="1.7"/>}
         case "synchronizing":
             return {
                 pill: "primary",
-                icon: <ArrowPathIcon className="h-6 w-6 text-inherit animate-spin" strokeWidth="2"/>
+                icon: <ArrowPathIcon className="h-4 w-4 text-inherit animate-spin" strokeWidth="2"/>
             }
     }
 }
@@ -86,9 +86,9 @@ const ExperimentItem = ({experiment, onDelete, onSelect, deleting, selected}: Ex
             <Pill
                 title={icon}
                 variant={pill}
-                className="w-10 text-center truncate"
+                className="text-center truncate"
             />
-            {experiment.name !== "" ? <span>{experiment.name}</span> : <Skeleton className="w-32 h-6"/>}
+            {experiment.name !== "" ? <span>{experiment.name}</span> : <Skeleton className="w-32 h-4"/>}
             <Button className="group-hover:opacity-100 opacity-0 size-6 text-red-600 ml-auto" onClick={e => {
                 e.stopPropagation();
                 setDialog(<ConfirmDiscardExperimentDialog experiment={experiment} onDiscard={() => {

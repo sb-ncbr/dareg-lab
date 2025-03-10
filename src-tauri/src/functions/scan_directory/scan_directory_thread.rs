@@ -7,8 +7,8 @@ use std::time::Duration;
 use tauri::Window;
 use tokio::sync::{Mutex};
 use tokio::time;
-use crate::functions::scan_directory::direcory_change_resolver::{get_directory_change, DirectoryChange};
-use crate::functions::scan_directory::direcory_handlers::{handle_directories_deleted, handle_directory_created};
+use crate::functions::scan_directory::directory_change_resolver::{get_directory_change, DirectoryChange};
+use crate::functions::scan_directory::directory_handlers::{handle_directories_deleted, handle_directory_created};
 use crate::functions::scan_directory::file_change_resolver::{get_file_change, FileChange};
 use crate::functions::scan_directory::file_handlers::{handle_file_created, handle_file_modified, handle_files_deleted};
 
@@ -41,7 +41,7 @@ pub async fn scan_directory_thread(
     let mut entries: Vec<Entry> = Vec::new();
     loop {
         interval.tick().await;
-        let mut current_entries = scan_directory(Path::new(scan_task_directory.as_str()), false).await;
+        let mut current_entries = scan_directory(Path::new(scan_task_directory.as_str())).await;
         let mut guard = scan_task_arc.lock().await;
 
         for entry in &current_entries {

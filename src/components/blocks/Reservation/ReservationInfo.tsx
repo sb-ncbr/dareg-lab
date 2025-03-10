@@ -8,7 +8,7 @@ interface ReservationInfoProps {
 
 const ReservationInfo = ({reservation}: ReservationInfoProps) => {
     return (
-        <div className="rounded-lg border border-gray-300 p-6">
+        <div className="rounded-lg border border-gray-300 p-4">
             <TimeSpan start={reservation.from_date} end={reservation.to_date} showDate />
             <User name={reservation.user} />
         </div>

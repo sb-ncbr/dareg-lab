@@ -3,6 +3,21 @@
 version = 4
 
 [[package]]
+name = "DAREG_Lab_Client"
+version = "0.2.2"
+dependencies = [
+ "log",
+ "onedata",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "sha2",
+ "tauri",
+ "tauri-build",
+ "tokio",
+]
+
+[[package]]
 name = "addr2line"
 version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -532,20 +547,6 @@ dependencies = [
  "darling_core",
  "quote",
  "syn 2.0.72",
-]
-
-[[package]]
-name = "datareg"
-version = "0.1.0"
-dependencies = [
- "onedata",
- "reqwest",
- "serde",
- "serde_json",
- "sha2",
- "tauri",
- "tauri-build",
- "tokio",
 ]
 
 [[package]]

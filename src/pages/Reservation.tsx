@@ -30,7 +30,7 @@ const ReservationPage = () => {
 
     return (
         <Section title={loading ? undefined : dataset?.name}>
-            <div className="flex flex-col gap-4 flex-1">
+            <div className="flex flex-col gap-4 flex-1 min-h-0">
                 {loading ? <Skeleton className="h-[98px]"/> : <ReservationInfo reservation={reservation!}/>}
                 {loading ? <ExperimentsContainer><Skeleton className="h-full w-full"/></ExperimentsContainer> :
                     <Experiments dataset={dataset!}/>}

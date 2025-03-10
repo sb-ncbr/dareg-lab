@@ -127,16 +127,18 @@ const ExperimentForm = ({instrument, experiment, onUpdate}: ExperimentFormProps)
     return (
         <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(handleSubmit)} className="h-full flex flex-col gap-2 relative">
-                <TextInput<ExperimentFormValues> fieldName="name" label="Name"/>
-                <div className="flex flex-row gap-2 items-end">
-                    <TextInput<ExperimentFormValues> fieldName="folder" label="Data Folder"/>
-                    <Button type="button" onClick={pickFolder} className="h-[38px]"><FolderOpenIcon className="h-6 w-6" /></Button>
+                <div className="flex flex-col flex-1 gap-2 overflow-y-auto min-h-0">
+                    <TextInput<ExperimentFormValues> fieldName="name" label="Name"/>
+                    <div className="flex flex-row gap-2 items-end">
+                        <TextInput<ExperimentFormValues> fieldName="folder" label="Data Folder"/>
+                        <Button type="button" onClick={pickFolder} className="h-[38px]"><FolderOpenIcon className="h-4 w-4" /></Button>
+                    </div>
+                    <div className="flex flex-row gap-2">
+                        <DateDisplayInput date={experiment.start_time ? new Date(experiment.start_time) : null} label="Start Time" readOnly/>
+                        <DateDisplayInput date={experiment.end_time ? new Date(experiment.end_time) : null} label="End Time" readOnly/>
+                    </div>
+                    <TextAreaInput<ExperimentFormValues> fieldName="note" rows={4} label="Note"/>
                 </div>
-                <div className="flex flex-row gap-2">
-                    <DateDisplayInput date={experiment.start_time ? new Date(experiment.start_time) : null} label="Start Time" readOnly/>
-                    <DateDisplayInput date={experiment.end_time ? new Date(experiment.end_time) : null} label="End Time" readOnly/>
-                </div>
-                <TextAreaInput<ExperimentFormValues> fieldName="note" rows={4} label="Note"/>
                 <ExperimentData onSuccess={success} onError={success}/>
                 <div className="mt-auto">
                     {methods.formState.isDirty && <Button type="submit" className="w-full" color="secondary"

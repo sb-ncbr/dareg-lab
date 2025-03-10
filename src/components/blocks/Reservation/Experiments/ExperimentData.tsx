@@ -125,7 +125,7 @@ const ExperimentData = ({onSuccess}: ExperimentDataProps) => {
 
 
     return (
-        <div className="rounded-lg border border-gray-300 p-6 relative">
+        <div className="rounded-lg border border-gray-300 p-4 relative">
             <H4>Data Information</H4>
             <div className="flex flex-row gap-2 items-center"><strong>Status:</strong> <Pill
                 title={resolveTitle(fileEntries)} variant="primary" size="small"/></div>
