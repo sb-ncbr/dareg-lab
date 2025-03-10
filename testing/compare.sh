@@ -1,0 +1,5 @@
+python3 compare.py \
+    --path /Users/davidkonecny/Documents/school/diplomova-prace/datareg/testing/out \
+    --dir_id 0000000000529B1067756964233462373563646235383235376134643833336530643330343539383932636661636835666539233162336430663331316337633933386632306531306137393438336431616431636862306339 \
+    --auth_token TOKEN \
+    --provider_url https://oneprovider01.devel.onedata.e-infra.cz

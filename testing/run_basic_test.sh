@@ -1,12 +1,12 @@
 python main.py \
   --directory /Users/davidkonecny/Documents/school/diplomova-prace/datareg/testing/out \
-  --max_file_size 100 \
-  --min_file_size 10 \
-  --max_nesting 5 \
-  --min_nesting 2 \
+  --max_file_size 10000000 \
+  --min_file_size 1000000 \
+  --max_nesting 2 \
+  --min_nesting 0 \
   --file_format text \
-  --time 20 \
+  --time 120 \
   --modify \
   --delete \
-  --ops_per_sec 10 \
+  --ops_per_sec 0.1 \
   --clear
