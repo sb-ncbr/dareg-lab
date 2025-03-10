@@ -140,7 +140,7 @@ const ExperimentForm = ({instrument, experiment, onUpdate}: ExperimentFormProps)
                     <TextAreaInput<ExperimentFormValues> fieldName="note" rows={4} label="Note"/>
                 </div>
                 <ExperimentData onSuccess={success} onError={success}/>
-                <div className="mt-auto">
+                <div className="mt-auto gap-2 flex flex-col">
                     {methods.formState.isDirty && <Button type="submit" className="w-full" color="secondary"
                                                           loading={isUpdateExperimentPending}>Save</Button>}
                     {(experiment.status === "prepared" || experiment.status === "running") &&

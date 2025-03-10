@@ -39,6 +39,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-absolute-imports": "^0.0.3",
     "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "globals": "^15.9.0",
     "orval": "^7.4.1",
     "postcss": "^8.4.40",

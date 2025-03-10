@@ -110,18 +110,19 @@ const ExperimentData = ({onSuccess}: ExperimentDataProps) => {
         return () => {
             clearInterval(handle);
         }
-    }, []);
+    }, [setFileEntries]);
 
     useEffect(() => {
         const unlisten = listen<string>('files-upload-confirmation', (event) => {
             const experimentId = event.payload as string;
             onSuccess(experimentId);
+            setFileEntries([]);
         });
 
         return () => {
             unlisten.then(f => f());
         };
-    }, []);
+    }, [onSuccess, setFileEntries]);
 
 
     return (

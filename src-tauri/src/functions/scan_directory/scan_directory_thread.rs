@@ -1,5 +1,5 @@
 use crate::types::app::Task;
-use crate::utils::files::scan_directory::{scan_directory, DirectoryEntry, Entry, FileEntry};
+use crate::utils::files::scan_directory::{scan_directory, Entry};
 use std::collections::VecDeque;
 use std::path::{Path};
 use std::sync::Arc;

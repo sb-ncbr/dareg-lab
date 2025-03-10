@@ -46,10 +46,17 @@ pub async fn upload_file_in_chunks(
         file.read_exact(&mut buffer[..bytes_to_read])?;
 
         // Define the endpoint URL
-        let url = format!(
-            "{}/data/{}/content?offset={}",
-            provider_host, file_id, offset
-        );
+        let url = if offset == 0 {
+            format!(
+                "{}/data/{}/content",
+                provider_host, file_id
+            )
+        } else {
+            format!(
+                "{}/data/{}/content?offset={}",
+                provider_host, file_id, offset
+            )
+        };
 
         // Upload the chunk
         let response = client
