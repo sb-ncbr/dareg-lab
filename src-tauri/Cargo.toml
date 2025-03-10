@@ -18,6 +18,7 @@ reqwest = "0.12.12"
 onedata = { path = "./lib/onedata" }
 tokio = "1.39.2"
 sha2 = "0.10.8"
+log = "0.4.22"
 
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!
