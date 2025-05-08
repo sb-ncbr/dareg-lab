@@ -10,19 +10,19 @@ use std::os::unix::fs::MetadataExt;
 use std::os::windows::fs::MetadataExt;
 use std::path::{Path, PathBuf};
 
-#[derive(Serialize, Clone)]
+#[derive(Serialize, Clone, PartialEq, Debug)]
 pub struct FileEntry {
     pub hash: String,
     pub path: PathBuf,
     pub size: u64,
 }
 
-#[derive(Serialize, Clone)]
+#[derive(Serialize, Clone, PartialEq, Debug)]
 pub struct DirectoryEntry {
     pub path: PathBuf,
 }
 
-#[derive(Serialize, Clone)]
+#[derive(Serialize, Clone, PartialEq, Debug)]
 pub enum Entry {
     File(FileEntry),
     Directory(DirectoryEntry),

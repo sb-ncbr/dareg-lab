@@ -18,9 +18,6 @@ use tauri::Window;
 use tokio::sync::Mutex;
 use tokio::time;
 
-// TODO: Handle moved files
-// TODO: Handle moved directories
-
 const FILES_SCANNED_EVENT_NAME: &str = "files-scanned";
 
 /// Scan given directory for files and directories and publish changes to synchronize
@@ -60,9 +57,6 @@ pub async fn scan_directory_thread(
                         FileChange::Modified => {
                             handle_file_modified(&mut entries, &mut guard, file);
                         }
-                        // FileChange::Moved => {
-                        //     handle_file_moved(&mut entries, &mut guard, file);
-                        // }
                         FileChange::Unchanged => {
                             // Do nothing
                         }
@@ -73,8 +67,6 @@ pub async fn scan_directory_thread(
                         DirectoryChange::Created => {
                             handle_directory_created(&mut entries, &mut guard, directory);
                         }
-                        // DirectoryChange::Modified => {}
-                        // DirectoryChange::Moved => {}
                         DirectoryChange::Unchanged => {
                             // Do nothing
                         }
