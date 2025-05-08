@@ -1,6 +1,6 @@
-use log::info;
 use crate::types::app::AppData;
 use crate::utils::config::Config;
+use log::info;
 use tauri::{Manager, Window};
 
 /// Command to get the config from the window state

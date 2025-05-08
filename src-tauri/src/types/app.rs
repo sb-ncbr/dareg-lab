@@ -13,10 +13,10 @@ pub struct AppData {
 pub enum Task {
     CreateFile(PathBuf),
     ModifyFile(PathBuf),
-    MoveFile(PathBuf),
+    // MoveFile(PathBuf),
     DeleteFile(PathBuf),
     CreateDirectory(PathBuf),
-    MoveDirectory(PathBuf),
+    // MoveDirectory(PathBuf),
     DeleteDirectory(PathBuf),
 }
 

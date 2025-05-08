@@ -1,17 +1,21 @@
+use crate::functions::process_files::directory_processors::{
+    handle_create_directory, handle_delete_directory,
+};
+use crate::functions::process_files::file_processors::{
+    handle_create_file, handle_delete_file, handle_modify_file,
+};
 use crate::types::app::{Status, Task};
 use crate::types::upload_parameters::UploadParameters;
+use log::info;
+use serde::Serialize;
 use std::collections::{HashMap, VecDeque};
-use std::path::{PathBuf};
+use std::path::PathBuf;
 use std::sync::Arc;
 use std::time::Duration;
-use serde::Serialize;
+use std::time::Instant;
 use tauri::Window;
 use tokio::sync::Mutex;
 use tokio::time::sleep;
-use std::time::Instant;
-use log::{error, info};
-use crate::functions::process_files::directory_processors::{handle_create_directory, handle_delete_directory};
-use crate::functions::process_files::file_processors::{handle_create_file, handle_delete_file, handle_modify_file};
 
 const FILE_UPLOAD_CONFIRMATION_EVENT_NAME: &str = "files-upload-confirmation";
 
@@ -26,7 +30,7 @@ pub enum FileEventStatus {
 pub struct FileEvent {
     pub path: PathBuf,
     pub status: FileEventStatus,
-    pub progress: f32
+    pub progress: f32,
 }
 
 /// Process the upload tasks
@@ -86,10 +90,23 @@ pub async fn process_files_thread(
         info!("[task_processing.start]: \n{:?}", &task);
         match task {
             Task::CreateFile(path) => {
-                handle_create_file(&upload_parameters, &upload_task_window, &upload_task_directory, &mut file_id_map, path).await;
+                handle_create_file(
+                    &upload_parameters,
+                    &upload_task_window,
+                    &upload_task_directory,
+                    &mut file_id_map,
+                    path,
+                )
+                .await;
             }
             Task::ModifyFile(path) => {
-                handle_modify_file(&upload_parameters, &upload_task_window, &upload_task_directory, &mut file_id_map, &path).await;
+                handle_modify_file(
+                    &upload_parameters,
+                    &upload_task_window,
+                    &mut file_id_map,
+                    &path,
+                )
+                .await;
             }
             Task::DeleteFile(path) => {
                 handle_delete_file(&upload_parameters, &upload_task_directory, path).await;
@@ -99,9 +116,6 @@ pub async fn process_files_thread(
             }
             Task::DeleteDirectory(path) => {
                 handle_delete_directory(&upload_parameters, &upload_task_directory, path).await;
-            }
-            _ => {
-                error!("[task_processing.error]: Task not supported: {:?}", &task);
             }
         }
         let elapsed = before.elapsed();

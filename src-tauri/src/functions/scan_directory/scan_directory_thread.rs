@@ -1,16 +1,22 @@
+use crate::functions::scan_directory::directory_change_resolver::{
+    get_directory_change, DirectoryChange,
+};
+use crate::functions::scan_directory::directory_handlers::{
+    handle_directories_deleted, handle_directory_created,
+};
+use crate::functions::scan_directory::file_change_resolver::{get_file_change, FileChange};
+use crate::functions::scan_directory::file_handlers::{
+    handle_file_created, handle_file_modified, handle_files_deleted,
+};
 use crate::types::app::Task;
 use crate::utils::files::scan_directory::{scan_directory, Entry};
 use std::collections::VecDeque;
-use std::path::{Path};
+use std::path::Path;
 use std::sync::Arc;
 use std::time::Duration;
 use tauri::Window;
-use tokio::sync::{Mutex};
+use tokio::sync::Mutex;
 use tokio::time;
-use crate::functions::scan_directory::directory_change_resolver::{get_directory_change, DirectoryChange};
-use crate::functions::scan_directory::directory_handlers::{handle_directories_deleted, handle_directory_created};
-use crate::functions::scan_directory::file_change_resolver::{get_file_change, FileChange};
-use crate::functions::scan_directory::file_handlers::{handle_file_created, handle_file_modified, handle_files_deleted};
 
 // TODO: Handle moved files
 // TODO: Handle moved directories
@@ -47,7 +53,7 @@ pub async fn scan_directory_thread(
         for entry in &current_entries {
             match entry {
                 Entry::File(file) => {
-                    match get_file_change(&file, &entries) {
+                    match get_file_change(file, &entries) {
                         FileChange::Created => {
                             handle_file_created(&mut entries, &mut guard, file);
                         }
@@ -63,7 +69,7 @@ pub async fn scan_directory_thread(
                     }
                 }
                 Entry::Directory(directory) => {
-                    match get_directory_change(&directory, &entries) {
+                    match get_directory_change(directory, &entries) {
                         DirectoryChange::Created => {
                             handle_directory_created(&mut entries, &mut guard, directory);
                         }

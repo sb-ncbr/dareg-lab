@@ -1,8 +1,8 @@
+use crate::types::app::Task;
+use crate::utils::files::scan_directory::{DirectoryEntry, Entry};
 use std::collections::VecDeque;
 use std::path::PathBuf;
 use tokio::sync::MutexGuard;
-use crate::types::app::Task;
-use crate::utils::files::scan_directory::{DirectoryEntry, Entry};
 
 pub fn handle_directory_created(
     entries: &mut Vec<Entry>,

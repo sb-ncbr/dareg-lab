@@ -3,8 +3,10 @@ use serde::Serialize;
 use std::collections::VecDeque;
 use std::fs;
 #[cfg(target_family = "unix")]
+#[allow(unused_imports)]
 use std::os::unix::fs::MetadataExt;
 #[cfg(target_family = "windows")]
+#[allow(unused_imports)]
 use std::os::windows::fs::MetadataExt;
 use std::path::{Path, PathBuf};
 

@@ -8,9 +8,7 @@ pub enum DirectoryChange {
     // Deleted, needs to be handled separately
 }
 
-
-
-pub fn get_directory_change(directory: &DirectoryEntry, entries: &Vec<Entry>) -> DirectoryChange {
+pub fn get_directory_change(directory: &DirectoryEntry, entries: &[Entry]) -> DirectoryChange {
     let directory_entries = entries
         .iter()
         .filter_map(|entry| match entry {

@@ -1,5 +1,5 @@
-use log::{error, info, warn};
 use crate::{State, Status};
+use log::{error, info, warn};
 use tauri::{Manager, Window};
 
 #[tauri::command]

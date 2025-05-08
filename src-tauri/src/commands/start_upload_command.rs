@@ -3,9 +3,8 @@ use crate::functions::process_files::process_files_thread::process_files_thread;
 use crate::functions::scan_directory::scan_directory_thread::scan_directory_thread;
 use crate::types::app::AppData;
 use crate::{State, Status};
+use log::{error, info};
 use tauri::{Manager, Window};
-use log::{info, error};
-
 
 #[tauri::command]
 pub async fn start_upload(
@@ -37,7 +36,7 @@ pub async fn start_upload(
             Err(_) => {
                 error!("[start_upload.upload_parameters] Unable to get upload parameters");
                 return Err(());
-            },
+            }
         };
 
     let scan_task = tokio::spawn(scan_directory_thread(

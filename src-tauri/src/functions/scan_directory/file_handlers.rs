@@ -18,14 +18,14 @@
 //     }
 // }
 
+use crate::types::app::Task;
+use crate::utils::files::scan_directory::{Entry, FileEntry};
 use std::collections::VecDeque;
 use std::path::PathBuf;
 use tokio::sync::MutexGuard;
-use crate::types::app::Task;
-use crate::utils::files::scan_directory::{Entry, FileEntry};
 
 pub fn handle_file_modified(
-    entries: &mut Vec<Entry>,
+    entries: &mut [Entry],
     guard: &mut MutexGuard<VecDeque<Task>>,
     file: &FileEntry,
 ) {
