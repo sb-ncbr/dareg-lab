@@ -1,0 +1,35 @@
+@startuml
+
+node "Client PC" <<device>> {
+    artifact "DAREG Lab Client" as client_app
+}
+
+node "DAREG API" <<device>> {
+    artifact "Django Rest Application" as dareg_api
+}
+
+node "OneData" <<device>> {
+    artifact "OneData API" as onedata_api
+}
+
+node "Booking Service" <<device>> {
+    artifact "Booking API" as booking_api
+}
+
+database "DAREG DB" as dareg_db {
+
+}
+
+database "ONEDATA DATA" as onedata_db {
+
+}
+
+client_app -- dareg_api : Communicates
+client_app -- onedata_api : Communicates
+
+dareg_api -- booking_api : Uses
+dareg_api -- onedata_api : Uses
+dareg_api -- dareg_db: Uses
+onedata_api -- onedata_db: Uses
+
+@enduml

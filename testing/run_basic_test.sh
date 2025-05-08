@@ -1,7 +1,7 @@
 python main.py \
   --directory /Users/davidkonecny/Documents/school/diplomova-prace/datareg/testing/out \
-  --max_file_size 10000000 \
-  --min_file_size 1000000 \
+  --max_file_size 1000000 \
+  --min_file_size 100000 \
   --max_nesting 2 \
   --min_nesting 0 \
   --file_format text \

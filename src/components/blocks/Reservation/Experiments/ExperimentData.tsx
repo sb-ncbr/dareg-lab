@@ -37,7 +37,7 @@ const resolveEventOnSyncingFile = (event: FileEvent, f: SyncingFile): SyncingFil
         file.processAt = new Date();
     }
 
-    if (file.startedAt != null && file.processAt != null) {
+    if (file.startedAt != null && file.processAt != null && (file.processAt.valueOf() - file.startedAt.valueOf()) !== 0) {
         file.uploadSpeedEstimate = (file.progress * file.entry.size) / ((file.processAt.valueOf() - file.startedAt.valueOf()) / 1000)
     }
 
@@ -55,7 +55,9 @@ const ExperimentData = ({onSuccess}: ExperimentDataProps) => {
         const synchronized = fileEntries.reduce((acc, f) => acc + f.entry.size * f.progress, 0);
         const totalCount = fileEntries.length;
         const synchronizedCount = fileEntries.filter(f => f.status === "Finished").length;
-        const uploadSpeedEstimate = fileEntries.reduce((acc, f) => acc + (f.uploadSpeedEstimate ?? 0), 0) / fileEntries.filter(f => f.status === "Progress" || f.status === "Finished").length;
+
+        const uploadFiles = fileEntries.filter(f => f.status === "Progress" || f.status === "Finished").length;
+        const uploadSpeedEstimate = uploadFiles > 0 ? (fileEntries.reduce((acc, f) => acc + (f.uploadSpeedEstimate ?? 0), 0) / uploadFiles) : 0;
         return {size, synchronized, totalCount, synchronizedCount, uploadSpeedEstimate};
     }, [fileEntries])
 

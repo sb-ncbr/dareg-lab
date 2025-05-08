@@ -2,6 +2,7 @@ use crate::types::files::CreateFileResponse;
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
 use std::io::{self};
 use std::path::Path;
+use log::info;
 
 /// Uploads a file in chunks to the specified endpoint.
 ///
@@ -43,7 +44,7 @@ pub async fn create_directory_at_path(
         let response_text = response.text().await?;
         let parsed_response: CreateFileResponse = serde_json::from_str(&response_text)?;
 
-        println!(
+        info!(
             "Directory {} created successfully with ID: {}",
             path.display(),
             parsed_response.file_id

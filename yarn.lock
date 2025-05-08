@@ -2303,6 +2303,11 @@ eslint-plugin-absolute-imports@^0.0.3:
   resolved "https://registry.yarnpkg.com/eslint-plugin-absolute-imports/-/eslint-plugin-absolute-imports-0.0.3.tgz#b4eb9bff6e7a73e8bc66082ce892edc24b34fb68"
   integrity sha512-7gjXEpfCWP8yqPEWU4Ozbfo2wOlV2y3tkHJeJ50kCmBGDr3osx0VRiCwIvvmVXhVA6mags9J4qva+AClmSnWvg==
 
+eslint-plugin-react-hooks@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-5.2.0.tgz#1be0080901e6ac31ce7971beed3d3ec0a423d9e3"
+  integrity sha512-+f15FfK64YQwZdJNELETdn5ibXEUQmW1DZL6KXhNnc2heoy/sg9VJJeT7n8TlMWouzWqSWavFkIhHyIbIAEapg==
+
 eslint-plugin-react@^7.35.0:
   version "7.35.0"
   resolved "https://registry.npmjs.org/eslint-plugin-react/-/eslint-plugin-react-7.35.0.tgz"

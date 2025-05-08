@@ -1,6 +1,7 @@
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
 use std::fs::File;
 use std::io::{self, Read, Seek, SeekFrom};
+use log::info;
 
 /// Uploads a file in chunks to the specified endpoint.
 ///
@@ -67,7 +68,7 @@ pub async fn upload_file_in_chunks(
             .await?;
 
         if response.status().is_success() {
-            println!(
+            info!(
                 "Uploaded chunk at offset {} ({} bytes)",
                 offset, bytes_to_read
             );
@@ -84,6 +85,6 @@ pub async fn upload_file_in_chunks(
         on_chunk_uploaded(offset, file_size);
     }
 
-    println!("File uploaded successfully!");
+    info!("File uploaded successfully!");
     Ok(())
 }

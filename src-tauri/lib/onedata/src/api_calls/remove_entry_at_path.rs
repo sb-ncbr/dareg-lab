@@ -1,6 +1,7 @@
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
 use std::io::{self};
 use std::path::Path;
+use log::info;
 
 pub async fn remove_entry_at_path(
     path: &Path,
@@ -30,7 +31,7 @@ pub async fn remove_entry_at_path(
 
     if response.status().is_success() {
 
-        println!(
+        info!(
             "Entry {} removed successfully",
             path.file_name().unwrap().to_string_lossy(),
         );
