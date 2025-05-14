@@ -6,6 +6,14 @@ use crate::{State, Status};
 use log::{error, info};
 use tauri::{Manager, Window};
 
+
+/// Command to start the upload process
+///
+/// # Arguments
+///
+/// * `window`: Tauri Application Window
+/// * `directory`: Directory to upload
+/// * `experiment_id`: Experiment Id in DAREG API
 #[tauri::command]
 pub async fn start_upload(
     window: Window,

@@ -1,9 +1,15 @@
-use crate::utils::config::Config;
 use std::collections::VecDeque;
 use std::path::PathBuf;
 use std::sync::Arc;
+use serde::{Deserialize, Serialize};
 use tokio::sync::Mutex;
 use tokio::task::JoinHandle;
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct Config {
+    pub token: String,
+    pub dareg_url: String,
+}
 
 pub struct AppData {
     pub config: Config,
@@ -13,10 +19,8 @@ pub struct AppData {
 pub enum Task {
     CreateFile(PathBuf),
     ModifyFile(PathBuf),
-    // MoveFile(PathBuf),
     DeleteFile(PathBuf),
     CreateDirectory(PathBuf),
-    // MoveDirectory(PathBuf),
     DeleteDirectory(PathBuf),
 }
 

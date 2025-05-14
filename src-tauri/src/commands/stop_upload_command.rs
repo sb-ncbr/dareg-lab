@@ -2,6 +2,11 @@ use crate::{State, Status};
 use log::{error, info, warn};
 use tauri::{Manager, Window};
 
+/// Command to stop the upload process
+/// 
+/// # Arguments
+/// 
+/// * `window`: Tauri Application Window
 #[tauri::command]
 pub async fn stop_upload(window: Window) -> Result<(), ()> {
     info!("[stop_upload.start] Command Started");

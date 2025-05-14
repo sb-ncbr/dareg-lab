@@ -4,6 +4,13 @@ use std::collections::VecDeque;
 use std::path::PathBuf;
 use tokio::sync::MutexGuard;
 
+/// Handles the creation of a directory entry.
+/// 
+/// # Arguments
+/// 
+/// * `entries`: A mutable slice of `Entry` objects representing the current state of directories.
+/// * `guard`: A mutable reference to a `MutexGuard` containing a queue of tasks.
+/// * `directory`: A reference to the `DirectoryEntry` that has been created.
 pub fn handle_directory_created(
     entries: &mut Vec<Entry>,
     guard: &mut MutexGuard<VecDeque<Task>>,
@@ -13,6 +20,13 @@ pub fn handle_directory_created(
     entries.push(Entry::Directory(directory.clone()));
 }
 
+/// Handles the deletion of directories.
+/// 
+/// # Arguments
+/// 
+/// * `entries`: A mutable slice of `Entry` objects representing the current state of directories.
+/// * `current_entries`: A mutable reference to a `VecDeque` of `Entry` objects representing the current state.
+/// * `guard`: A mutable reference to a `MutexGuard` containing a queue of tasks.
 pub fn handle_directories_deleted(
     entries: &mut Vec<Entry>,
     current_entries: &mut VecDeque<Entry>,

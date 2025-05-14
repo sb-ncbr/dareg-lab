@@ -1,13 +1,14 @@
-use serde::{Deserialize, Serialize};
 use std::fs;
 use tauri::AppHandle;
+use crate::types::app::Config;
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct Config {
-    pub token: String,
-    pub dareg_url: String,
-}
-
+/// Loads the configuration from the config.json file in the app's config directory.
+///
+/// # Arguments
+///
+/// * `handle`: A reference to the AppHandle.
+///
+/// Returns: Result<Config, String>
 pub fn load_config(handle: &AppHandle) -> Result<Config, String> {
     let path = match handle.path_resolver().app_config_dir() {
         Some(path) => path.join("config.json"),

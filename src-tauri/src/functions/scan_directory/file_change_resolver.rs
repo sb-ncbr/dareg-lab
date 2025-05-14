@@ -4,11 +4,17 @@ use crate::utils::files::scan_directory::{Entry, FileEntry};
 pub enum FileChange {
     Created,
     Modified,
-    // Moved,
     Unchanged,
-    // Deleted, needs to be handled separately
 }
 
+/// Determines the change status of a file based on its hash and path.
+/// 
+/// # Arguments
+/// 
+/// * `file`: A reference to the `FileEntry` to check.
+/// * `entries`: A slice of `Entry` objects representing the current state of files.
+///
+/// returns: FileChange
 pub fn get_file_change(file: &FileEntry, entries: &[Entry]) -> FileChange {
     let file_entries = entries
         .iter()
@@ -31,14 +37,6 @@ pub fn get_file_change(file: &FileEntry, entries: &[Entry]) -> FileChange {
     {
         return FileChange::Created;
     }
-    /*    if file_entries
-        .iter()
-        .any(|entry| entry.hash == file.hash && entry.path != file.path)
-    {
-        // TODO: Handle duplicate files
-        return FileChange::Moved;
-    }*/
-
     FileChange::Unchanged
 }
 

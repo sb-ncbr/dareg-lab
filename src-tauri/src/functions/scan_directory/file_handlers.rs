@@ -4,6 +4,13 @@ use std::collections::VecDeque;
 use std::path::PathBuf;
 use tokio::sync::MutexGuard;
 
+/// Handles the modification of a file entry.
+/// 
+/// # Arguments
+/// 
+/// * `entries`: A mutable slice of `Entry` objects representing the current state of files.
+/// * `guard`: A mutable reference to a `MutexGuard` containing a queue of tasks.
+/// * `file`: A reference to the `FileEntry` that has been modified.
 pub fn handle_file_modified(
     entries: &mut [Entry],
     guard: &mut MutexGuard<VecDeque<Task>>,
@@ -25,6 +32,13 @@ pub fn handle_file_modified(
     }
 }
 
+/// Handles the creation of a file entry.
+/// 
+/// # Arguments
+/// 
+/// * `entries`: A mutable slice of `Entry` objects representing the current state of files.
+/// * `guard`: A mutable reference to a `MutexGuard` containing a queue of tasks.
+/// * `file`: A reference to the `FileEntry` that has been created.
 pub fn handle_file_created(
     entries: &mut Vec<Entry>,
     guard: &mut MutexGuard<VecDeque<Task>>,
@@ -34,6 +48,13 @@ pub fn handle_file_created(
     entries.push(Entry::File(file.clone()));
 }
 
+/// Handles the deletion of files.
+/// 
+/// # Arguments
+/// 
+/// * `entries`: A mutable slice of `Entry` objects representing the current state of files.
+/// * `current_entries`: A mutable reference to a `VecDeque` of `Entry` objects representing the current state.
+/// * `guard`: A mutable reference to a `MutexGuard` containing a queue of tasks.
 pub fn handle_files_deleted(
     entries: &mut Vec<Entry>,
     current_entries: &mut VecDeque<Entry>,

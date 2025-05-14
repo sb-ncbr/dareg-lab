@@ -23,6 +23,7 @@ fn setup_logging() {
     if cfg!(debug_assertions) {
         env_logger::init();
     } else {
+        // TODO: Set up logging for release mode
         // let log_file = OpenOptions::new()
         //     .create(true)
         //     .append(true)
@@ -37,10 +38,12 @@ fn setup_logging() {
     }
 }
 
+/// Setup the Tauri application Context
 fn setup_handler(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error + 'static>> {
     let app_handle = app.handle();
 
-    let config = load_config(&app_handle).unwrap();
+    let config = load_config(&app_handle).
+        expect("Failed to load config");
     app.manage(AppData { config });
     app.manage(State {
         scan_handle: Mutex::new(None),
@@ -51,6 +54,7 @@ fn setup_handler(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error +
     });
     Ok(())
 }
+
 
 fn main() {
     setup_logging();

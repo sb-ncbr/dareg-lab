@@ -3,6 +3,12 @@ use std::io::{self};
 use std::path::Path;
 use log::info;
 
+/// Removes an entry at the specified path in the Onedata provider.
+///
+/// # Arguments
+/// * `path` - The path to the entry to remove.
+/// * `token` - The authentication token.
+/// * `provider_url` - The provider URL.
 pub async fn remove_entry_at_path(
     path: &Path,
     token: &String,

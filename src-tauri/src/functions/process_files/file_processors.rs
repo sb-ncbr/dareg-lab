@@ -1,5 +1,4 @@
-use crate::constants::CHUNK_SIZE;
-use crate::functions::process_files::process_files_thread::{FileEvent, FileEventStatus};
+use crate::constants::{CHUNK_SIZE, FILE_EVENT_NAME};
 use crate::types::upload_parameters::UploadParameters;
 use onedata::api_calls::create_file_at_path::create_file_at_path;
 use onedata::api_calls::remove_entry_at_path::remove_entry_at_path;
@@ -7,9 +6,16 @@ use onedata::api_calls::upload_file::upload_file_in_chunks;
 use std::collections::HashMap;
 use std::path::PathBuf;
 use tauri::Window;
+use crate::types::events::{FileEvent, FileEventStatus};
 
-const FILE_EVENT_NAME: &str = "file-event";
-
+/// Handle the modification of a file
+/// 
+/// # Arguments
+///
+/// * `upload_parameters`: Upload parameters for the upload process.
+/// * `upload_task_window`: Tauri Application Window.
+/// * `file_id_map`: HashMap to store the file Onedata IDs.
+/// * `path`: Path of the file to be modified.
 pub async fn handle_modify_file(
     upload_parameters: &UploadParameters,
     upload_task_window: &Window,
@@ -51,6 +57,14 @@ pub async fn handle_modify_file(
         .unwrap();
 }
 
+/// Handle the creation of a file
+///
+/// # Arguments
+/// * `upload_parameters`: Upload parameters for the upload process.
+/// * `upload_task_window`: Tauri Application Window.
+/// * `upload_task_directory`: Directory to upload.
+/// * `file_id_map`: HashMap to store the file Onedata IDs.
+/// * `path`: Path of the file to be created.
 pub async fn handle_create_file(
     upload_parameters: &UploadParameters,
     upload_task_window: &Window,
@@ -103,6 +117,12 @@ pub async fn handle_create_file(
         .unwrap();
 }
 
+/// Handle the deletion of a file
+/// 
+/// # Arguments
+/// * `upload_parameters`: Upload parameters for the upload process.
+/// * `upload_task_directory`: Directory to upload.
+/// * `path`: Path of the file to be deleted.
 pub async fn handle_delete_file(
     upload_parameters: &UploadParameters,
     upload_task_directory: &str,
@@ -119,6 +139,11 @@ pub async fn handle_delete_file(
     .unwrap();
 }
 
+/// Create a progress emitter for the file upload
+/// 
+/// # Arguments
+/// * `window`: Tauri Application Window.
+/// * `path`: Path of the file being uploaded.
 fn create_progress_emitter(
     window: Window,
     path: PathBuf,

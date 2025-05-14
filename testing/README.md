@@ -8,7 +8,7 @@ This utility can generate files in a directory structure. The files can be of a 
 
 ```
 python main.py \
-  --directory /Users/davidkonecny/Documents/school/diplomova-prace/datareg/testing/out \
+  --directory /path/to/direcory \
   --max_file_size 52428800 \
   --min_file_size 2428800 \
   --max_nesting 5 \

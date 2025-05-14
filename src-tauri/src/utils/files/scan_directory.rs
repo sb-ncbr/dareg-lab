@@ -28,19 +28,13 @@ pub enum Entry {
     Directory(DirectoryEntry),
 }
 
-///
+/// Scans a directory and its subdirectories, returning a vector of entries.
 ///
 /// # Arguments
 ///
-/// * `directory`:
+/// * `directory`: A path to the directory to scan.
 ///
-/// returns: VecDeque<Entry, Global>
-///
-/// # Examples
-///
-/// ```
-///
-/// ```
+/// returns: VecDeque<Entry>
 pub async fn scan_directory(directory: &Path) -> VecDeque<Entry> {
     let mut files = VecDeque::new();
     let mut buf = VecDeque::new();

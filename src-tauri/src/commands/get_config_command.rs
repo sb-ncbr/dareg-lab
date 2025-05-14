@@ -1,5 +1,4 @@
-use crate::types::app::AppData;
-use crate::utils::config::Config;
+use crate::types::app::{AppData, Config};
 use log::info;
 use tauri::{Manager, Window};
 
@@ -7,15 +6,9 @@ use tauri::{Manager, Window};
 ///
 /// # Arguments
 ///
-/// * `window`:
+/// * `window`: Tauri Application Window
 ///
 /// returns: Config
-///
-/// # Examples
-///
-/// ```
-///
-/// ```
 #[tauri::command]
 pub fn get_config(window: Window) -> Config {
     info!("[get_config.start] Getting the config");

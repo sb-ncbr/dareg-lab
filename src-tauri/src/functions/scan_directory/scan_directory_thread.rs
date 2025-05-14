@@ -17,8 +17,7 @@ use std::time::Duration;
 use tauri::Window;
 use tokio::sync::Mutex;
 use tokio::time;
-
-const FILES_SCANNED_EVENT_NAME: &str = "files-scanned";
+use crate::constants::FILES_SCANNED_EVENT_NAME;
 
 /// Scan given directory for files and directories and publish changes to synchronize
 ///
@@ -29,12 +28,6 @@ const FILES_SCANNED_EVENT_NAME: &str = "files-scanned";
 /// * `scan_task_window`:
 ///
 /// returns: ()
-///
-/// # Examples
-///
-/// ```
-///
-/// ```
 pub async fn scan_directory_thread(
     scan_task_arc: Arc<Mutex<VecDeque<Task>>>,
     scan_task_directory: String,

@@ -4,6 +4,14 @@ use std::io::{self};
 use std::path::Path;
 use log::info;
 
+/// Creates a file at the specified path in the Onedata provider.
+///
+/// # Arguments
+/// * `file_path` - The path to the file to upload.
+/// * `token` - The authentication token.
+/// * `provider_url` - The provider URL.
+/// * `space_id` - The ID of the space on the server.
+///
 pub async fn create_file_at_path(
     path: &Path,
     token: &String,

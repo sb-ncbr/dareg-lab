@@ -7,7 +7,6 @@ use crate::functions::process_files::file_processors::{
 use crate::types::app::{Status, Task};
 use crate::types::upload_parameters::UploadParameters;
 use log::info;
-use serde::Serialize;
 use std::collections::{HashMap, VecDeque};
 use std::path::PathBuf;
 use std::sync::Arc;
@@ -16,40 +15,17 @@ use std::time::Instant;
 use tauri::Window;
 use tokio::sync::Mutex;
 use tokio::time::sleep;
-
-const FILE_UPLOAD_CONFIRMATION_EVENT_NAME: &str = "files-upload-confirmation";
-
-#[derive(Serialize, Clone)]
-pub enum FileEventStatus {
-    Started,
-    Finished,
-    Progress,
-    // Error,
-}
-#[derive(Serialize, Clone)]
-pub struct FileEvent {
-    pub path: PathBuf,
-    pub status: FileEventStatus,
-    pub progress: f32,
-}
+use crate::constants::FILE_UPLOAD_CONFIRMATION_EVENT_NAME;
 
 /// Process the upload tasks
 ///
 /// # Arguments
 ///
-/// * `upload_parameters`:
-/// * `upload_task_arc`:
-/// * `upload_task_status_arc`:
-/// * `upload_task_window`:
-/// * `upload_task_directory`:
-///
-/// returns: ()
-///
-/// # Examples
-///
-/// ```
-///
-/// ```
+/// * `upload_parameters`: Upload parameters for the upload process.
+/// * `upload_task_arc`: Arc Mutex for the upload tasks queue.
+/// * `upload_task_status_arc`: Arc Mutex for the upload task status.
+/// * `upload_task_window`: Tauri Application Window.
+/// * `upload_task_directory`: Directory to upload.
 pub async fn process_files_thread(
     upload_parameters: UploadParameters,
     upload_task_arc: Arc<Mutex<VecDeque<Task>>>,

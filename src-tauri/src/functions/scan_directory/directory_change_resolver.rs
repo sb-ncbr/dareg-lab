@@ -3,11 +3,17 @@ use crate::utils::files::scan_directory::{DirectoryEntry, Entry};
 #[derive(Debug, PartialEq)]
 pub enum DirectoryChange {
     Created,
-    // Moved,
     Unchanged,
-    // Deleted, needs to be handled separately
 }
 
+/// Determines the change status of a directory based on its path.
+/// 
+/// # Arguments
+/// 
+/// * `directory`: A reference to the `DirectoryEntry` to check.
+/// * `entries`: A slice of `Entry` objects representing the current state of directories.
+/// 
+/// returns: DirectoryChange
 pub fn get_directory_change(directory: &DirectoryEntry, entries: &[Entry]) -> DirectoryChange {
     let directory_entries = entries
         .iter()
