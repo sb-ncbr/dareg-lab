@@ -6,7 +6,6 @@ The repository contains the DAREG Lab Client application. The application is a d
 - `src` - React application source code
 - `public` - Static files
 - `testing` - Testing utility for DAREG Lab Client file synchronization
-- 
 
 ## Config
 To configure the application, place a file named `config.json` in the application's config directory.
